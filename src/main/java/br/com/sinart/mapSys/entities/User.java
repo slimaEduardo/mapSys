@@ -1,16 +1,14 @@
 package br.com.sinart.mapSys.entities;
 
 import br.com.sinart.mapSys.entities.enums.UserProfile;
-import org.springframework.data.annotation.Id;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Transient;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Table(name="tb_users")
 public class User implements Serializable {
 
     @Id

@@ -1,16 +1,18 @@
 package br.com.sinart.mapSys.entities;
 
 import br.com.sinart.mapSys.entities.enums.LineCategory;
-import org.springframework.data.annotation.Id;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Transient;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
+@Table(name="tb_destinies")
 public class Destiny implements Serializable {
 
     @Id
@@ -21,6 +23,9 @@ public class Destiny implements Serializable {
     private LineCategory category;
     @Transient
     private Integer categoryId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destiny")
+    //@Fetch(FetchMode.JOIN)
+    private Set<TravelMap> mapDestiny = new HashSet<>();
 
     public Destiny(String name, Double distance, Integer categoryId) {
         this.name = name;

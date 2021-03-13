@@ -1,25 +1,28 @@
 package br.com.sinart.mapSys.entities;
 
 import br.com.sinart.mapSys.entities.enums.BusCategory;
-import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Transient;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
+@Table(name="tb_maps")
 public class TravelMap implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @ManyToOne
+    @JoinColumn(name="tb_mapCompany")
     private Company company;
     private BusCategory busCategory;
     private Date boardingTime;
+    @ManyToOne
+    @JoinColumn(name = "map_id")
     private Destiny destiny;
     private Integer passQtt;
 
