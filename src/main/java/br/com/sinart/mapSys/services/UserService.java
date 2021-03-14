@@ -1,6 +1,8 @@
 package br.com.sinart.mapSys.services;
 
+import br.com.sinart.mapSys.dto.UserNewDTO;
 import br.com.sinart.mapSys.entities.User;
+import br.com.sinart.mapSys.entities.enums.UserProfile;
 import br.com.sinart.mapSys.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ public class UserService {
     }
 
     public User insert(User obj) {
-
+         obj.setUserProfile(UserProfile.toEnum(obj.getProfileId()));
          return repository.save(obj);
     }
 
@@ -35,15 +37,22 @@ public class UserService {
     }
 
     public User update(Integer id, User obj) {
-
+        System.out.println("Aqui2: " + id +" "+ obj.getName());
             User entity = repository.getOne(id);
+            System.out.println("Aqui 4: "+ entity.getName());
             updateData(entity,obj);
             return repository.save(entity);
 
     }
 
     private void updateData(User entity, User obj) {
+        System.out.println("Aqui 3: "+ " " + entity.getName() + " " + obj.getName());
         entity.setName(obj.getName());
+        //entity.setUserProfile(UserProfile.toEnum(obj.getProfileId()));
+    }
 
+    public User fromDTO(UserNewDTO objDto) {
+        User usr = new User(objDto.getName(), objDto.getUserName(),objDto.getPassword(), objDto.getProfileId());
+        return usr;
     }
 }

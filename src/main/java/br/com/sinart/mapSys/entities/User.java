@@ -18,8 +18,9 @@ public class User implements Serializable {
     private String userName;
     private String password;
     private UserProfile userProfile;
-    @Transient
     private Integer profileId;
+
+    public User(){}
 
     public User(String name, String userName, String password, Integer profileId) {
         this.name = name;

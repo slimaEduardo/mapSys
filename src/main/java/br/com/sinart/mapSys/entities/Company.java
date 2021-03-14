@@ -19,8 +19,8 @@ public class Company implements Serializable {
     private Integer id;
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="company")
-    //@Fetch(FetchMode.JOIN)
+    @OneToMany( mappedBy="company")
+    @Fetch(FetchMode.JOIN)
     public Set<TravelMap> maps = new HashSet<>();
 
 

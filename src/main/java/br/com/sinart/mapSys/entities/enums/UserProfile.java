@@ -1,5 +1,8 @@
 package br.com.sinart.mapSys.entities.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum UserProfile {
 
     ADMIN(1,"ROLE_ADMIN"),
@@ -14,12 +17,13 @@ public enum UserProfile {
     }
 
     public Integer getCod() {
-        return cod;
+        return this.cod;
     }
 
     public String getDescription() {
         return description;
     }
+
 
     public static UserProfile toEnum(Integer cod){
         if(cod == null){
