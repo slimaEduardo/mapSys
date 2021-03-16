@@ -37,18 +37,16 @@ public class UserService {
     }
 
     public User update(Integer id, User obj) {
-        System.out.println("Aqui2: " + id +" "+ obj.getName());
             User entity = repository.getOne(id);
-            System.out.println("Aqui 4: "+ entity.getName());
             updateData(entity,obj);
             return repository.save(entity);
 
     }
 
     private void updateData(User entity, User obj) {
-        System.out.println("Aqui 3: "+ " " + entity.getName() + " " + obj.getName());
+
         entity.setName(obj.getName());
-        //entity.setUserProfile(UserProfile.toEnum(obj.getProfileId()));
+
     }
 
     public User fromDTO(UserNewDTO objDto) {

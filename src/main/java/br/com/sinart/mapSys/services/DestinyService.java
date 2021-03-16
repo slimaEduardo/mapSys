@@ -2,6 +2,7 @@ package br.com.sinart.mapSys.services;
 
 import br.com.sinart.mapSys.entities.Destiny;
 import br.com.sinart.mapSys.repositories.DestinyRepository;
+import br.com.sinart.mapSys.resources.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,9 @@ public class DestinyService {
         return repository.findAll();
     }
 
-    public Optional<Destiny> findById(Integer id) {
+    public Destiny findById(Integer id) {
         Optional<Destiny> obj = repository.findById(id);
-        return obj;
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Destiny insert(Destiny obj) {

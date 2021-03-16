@@ -19,8 +19,7 @@ public class Company implements Serializable {
     private Integer id;
     private String name;
 
-    @OneToMany( mappedBy="company")
-    @Fetch(FetchMode.JOIN)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy="company")
     public Set<TravelMap> maps = new HashSet<>();
 
 

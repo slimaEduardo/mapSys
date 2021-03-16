@@ -24,8 +24,10 @@ public class Destiny implements Serializable {
     @Transient
     private Integer categoryId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "destiny")
-    //@Fetch(FetchMode.JOIN)
-    private Set<TravelMap> mapDestiny = new HashSet<>();
+   private Set<TravelMap> mapDestiny = new HashSet<>();
+
+    public Destiny() {
+    }
 
     public Destiny(String name, Double distance, Integer categoryId) {
         this.name = name;

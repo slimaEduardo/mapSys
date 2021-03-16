@@ -1,6 +1,8 @@
 package br.com.sinart.mapSys.entities;
 
 import br.com.sinart.mapSys.entities.enums.BusCategory;
+import br.com.sinart.mapSys.services.CompanyService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -16,13 +18,16 @@ public class TravelMap implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
-    @JoinColumn(name="tb_mapCompany")
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="tb_id_Company")
     private Company company;
     private BusCategory busCategory;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private Date boardingDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private Date boardingTime;
-    @ManyToOne
-    @JoinColumn(name = "map_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tb_id_destiny")
     private Destiny destiny;
     private Integer passQtt;
 
@@ -33,13 +38,20 @@ public class TravelMap implements Serializable {
     @Transient
     private Integer destinyId;
 
-    public TravelMap(Date boardingTime, Integer passQtt, Integer companyId, Integer busId, Integer destinyId) {
+    public TravelMap() {
+    }
+
+    public TravelMap(Date boardingDate, Date boardingTime, Integer passQtt, Integer companyId, Integer busId, Integer destinyId) {
+        this.boardingDate = boardingDate;
         this.boardingTime = boardingTime;
         this.passQtt = passQtt;
         this.companyId = companyId;
         this.busId = busId;
         this.destinyId = destinyId;
+
     }
+
+
 
     public Company getCompany() {
         return company;
@@ -103,6 +115,19 @@ public class TravelMap implements Serializable {
 
     public void setDestinyId(Integer destinyId) {
         this.destinyId = destinyId;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+
+    public Date getBoardingDate() {
+        return boardingDate;
+    }
+
+    public void setBoardingDate(Date boardingDate) {
+        this.boardingDate = boardingDate;
     }
 
     @Override

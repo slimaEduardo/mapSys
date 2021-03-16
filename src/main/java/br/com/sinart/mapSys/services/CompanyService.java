@@ -2,6 +2,7 @@ package br.com.sinart.mapSys.services;
 
 import br.com.sinart.mapSys.entities.Company;
 import br.com.sinart.mapSys.repositories.CompanyRepository;
+import br.com.sinart.mapSys.resources.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,9 @@ public class CompanyService {
         return repository.findAll();
     }
 
-    public Optional<Company> findById(Integer id) {
+    public Company findById(Integer id) {
         Optional<Company> obj = repository.findById(id);
-        return obj;
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Company insert(Company obj) {
