@@ -1,15 +1,14 @@
 package br.com.sinart.mapSys.dto;
 
-import br.com.sinart.mapSys.entities.Company;
-import br.com.sinart.mapSys.entities.Destiny;
 import br.com.sinart.mapSys.entities.TravelMap;
 import br.com.sinart.mapSys.entities.enums.BusCategory;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+
+import java.time.LocalTime;
+
 
 public class TravelMapDTO implements Serializable {
 
@@ -18,9 +17,9 @@ public class TravelMapDTO implements Serializable {
     private String companyName;
     private BusCategory busCategory;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date boardingDate;
+    private LocalDate boardingDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm",timezone = "UTC-3")
-    private Date boardingTime;
+    private LocalTime boardingTime;
     private String destinyName;
     private Integer passQtt;
 
@@ -61,19 +60,19 @@ public class TravelMapDTO implements Serializable {
         this.busCategory = busCategory;
     }
 
-    public Date getBoardingDate() {
+    public LocalDate getBoardingDate() {
         return boardingDate;
     }
 
-    public void setBoardingDate(Date boardingDate) {
+    public void setBoardingDate(LocalDate boardingDate) {
         this.boardingDate = boardingDate;
     }
 
-    public Date getBoardingTime() {
+    public LocalTime getBoardingTime() {
         return boardingTime;
     }
 
-    public void setBoardingTime(Date boardingTime) {
+    public void setBoardingTime(LocalTime boardingTime) {
         this.boardingTime = boardingTime;
     }
 

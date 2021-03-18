@@ -1,34 +1,46 @@
 package br.com.sinart.mapSys.entities;
 
 import br.com.sinart.mapSys.entities.enums.BusCategory;
-import br.com.sinart.mapSys.services.CompanyService;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name="tb_maps")
+@Table(name="mapas")
 public class TravelMap implements Serializable {
+    @Transient
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+    @Transient
+    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_viagem")
     private Integer id;
     @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="tb_id_Company")
+    @JoinColumn(name="id_empresa_mapas")
     private Company company;
+    @Column(name="id_categoria_mapas")
     private BusCategory busCategory;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date boardingDate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
-    private Date boardingTime;
+   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @Column(name="data_viagem")
+    private LocalDate boardingDate;
+   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    @Column(name="hora_viagem")
+    private LocalTime boardingTime;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "tb_id_destiny")
+    @JoinColumn(name = "id_destino_mapas")
     private Destiny destiny;
+    @Column(name="qnt_passageiros")
     private Integer passQtt;
 
     @Transient
@@ -41,7 +53,7 @@ public class TravelMap implements Serializable {
     public TravelMap() {
     }
 
-    public TravelMap(Date boardingDate, Date boardingTime, Integer passQtt, Integer companyId, Integer busId, Integer destinyId) {
+    public TravelMap(LocalDate boardingDate, LocalTime boardingTime, Integer passQtt, Integer companyId, Integer busId, Integer destinyId) throws ParseException {
         this.boardingDate = boardingDate;
         this.boardingTime = boardingTime;
         this.passQtt = passQtt;
@@ -69,11 +81,11 @@ public class TravelMap implements Serializable {
         this.busCategory = busCategory;
     }
 
-    public Date getBoardingTime() {
+    public LocalTime getBoardingTime() {
         return boardingTime;
     }
 
-    public void setBoardingTime(Date boardingTime) {
+    public void setBoardingTime(LocalTime boardingTime) {
         this.boardingTime = boardingTime;
     }
 
@@ -122,11 +134,11 @@ public class TravelMap implements Serializable {
     }
 
 
-    public Date getBoardingDate() {
+    public LocalDate getBoardingDate() {
         return boardingDate;
     }
 
-    public void setBoardingDate(Date boardingDate) {
+    public void setBoardingDate(LocalDate boardingDate) {
         this.boardingDate = boardingDate;
     }
 

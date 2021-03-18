@@ -16,6 +16,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 @Configuration
@@ -35,6 +39,8 @@ public class TestConfig  implements CommandLineRunner {
 
         SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
+        DateTimeFormatter formatadorBarra = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatadorHora = DateTimeFormatter.ofPattern("HH:mm");
 
         //Cria os usuários
         User u1 = new User("Maria Brown", "maria.brown", "123", 1);
@@ -50,10 +56,10 @@ public class TestConfig  implements CommandLineRunner {
         Destiny d3 = new Destiny("PALMAS",1700.0,3);
         Destiny d4 = new Destiny("ASSUNÇÃO",2900.0,4);
         //cria os mapas
-        TravelMap m1 = new TravelMap(sdf1.parse("13/10/2009"), sdf2.parse("06:30"),0,1,2,2);
-        TravelMap m2 = new TravelMap(sdf1.parse("01/10/2009"), sdf2.parse("23:00"),12,4,1,4);
-        TravelMap m3 = new TravelMap(sdf1.parse("10/10/2009"), sdf2.parse("12:00"),24,3,3,3);
-        TravelMap m4 = new TravelMap(sdf1.parse("23/10/2009"), sdf2.parse("04:30"),100,2,1,1);
+        TravelMap m1 = new TravelMap(LocalDate.parse("13/10/2009", formatadorBarra), LocalTime.parse("06:30",formatadorHora),0,1,2,2);
+        TravelMap m2 = new TravelMap(LocalDate.parse("01/10/2009", formatadorBarra), LocalTime.parse("23:00",formatadorHora),12,4,1,4);
+        TravelMap m3 = new TravelMap(LocalDate.parse("10/10/2009", formatadorBarra),LocalTime.parse("12:00",formatadorHora),24,3,3,3);
+        TravelMap m4 = new TravelMap(LocalDate.parse("23/10/2009", formatadorBarra), LocalTime.parse("04:30",formatadorHora),100,2,1,1);
         //Adiciona as empresas aos mapas
         m1.setCompany(companyRepository.getById(m1.getCompanyId()));
         m2.setCompany(companyRepository.getById(m2.getCompanyId()));

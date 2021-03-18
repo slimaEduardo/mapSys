@@ -11,12 +11,14 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="tb_companies")
+@Table(name="empresa")
 public class Company implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_empresa")
     private Integer id;
+    @Column(name="nome_empresa")
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy="company")

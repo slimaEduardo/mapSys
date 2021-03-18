@@ -8,25 +8,31 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name="tb_users")
+@Table(name="usuario")
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_usuario")
     private Integer id;
     private String name;
+    @Column(name="nome_usuario")
     private String userName;
+    @Column(name="senha_usuario")
     private String password;
+    @Column(name="flag_admin")
     private UserProfile userProfile;
     private Integer profileId;
 
-    public User(){}
+    public User(
+    ){}
 
     public User(String name, String userName, String password, Integer profileId) {
         this.name = name;
         this.userName = userName;
         this.password = password;
         this.profileId = profileId;
+
     }
 
     public Integer getId() {
@@ -76,6 +82,7 @@ public class User implements Serializable {
     public void setProfileId(Integer profileId) {
         this.profileId = profileId;
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -12,14 +12,18 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="tb_destinies")
+@Table(name="destino")
 public class Destiny implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_destino")
     private Integer id;
+    @Column(name="nome_destino")
     private String name;
+    @Column(name="distancia_destino")
     private Double distance;
+    @Column(name="id_tipo_linha_destino")
     private LineCategory category;
     @Transient
     private Integer categoryId;
