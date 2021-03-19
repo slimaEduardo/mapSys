@@ -4,7 +4,6 @@ import br.com.sinart.mapSys.entities.Company;
 import br.com.sinart.mapSys.entities.Destiny;
 import br.com.sinart.mapSys.entities.TravelMap;
 import br.com.sinart.mapSys.entities.User;
-import br.com.sinart.mapSys.entities.enums.BusCategory;
 import br.com.sinart.mapSys.entities.enums.UserProfile;
 import br.com.sinart.mapSys.repositories.CompanyRepository;
 import br.com.sinart.mapSys.repositories.DestinyRepository;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Profile;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -61,15 +59,15 @@ public class TestConfig  implements CommandLineRunner {
         TravelMap m3 = new TravelMap(LocalDate.parse("10/10/2009", formatadorBarra),LocalTime.parse("12:00",formatadorHora),24,3,3,3);
         TravelMap m4 = new TravelMap(LocalDate.parse("23/10/2009", formatadorBarra), LocalTime.parse("04:30",formatadorHora),100,2,1,1);
         //Adiciona as empresas aos mapas
-        m1.setCompany(companyRepository.getById(m1.getCompanyId()));
-        m2.setCompany(companyRepository.getById(m2.getCompanyId()));
-        m3.setCompany(companyRepository.getById(m3.getCompanyId()));
-        m4.setCompany(companyRepository.getById(m4.getCompanyId()));
+        //m1.setCompany(companyRepository.getById(m1.getCompanyId()));
+       // m2.setCompany(companyRepository.getById(m2.getCompanyId()));
+       // m3.setCompany(companyRepository.getById(m3.getCompanyId()));
+       // m4.setCompany(companyRepository.getById(m4.getCompanyId()));
         //Adiciona a classe do onibus ao mapa
-        m1.setBusCategory(BusCategory.toEnum(m1.getBusId()));
-        m2.setBusCategory(BusCategory.toEnum(m2.getBusId()));
-        m3.setBusCategory(BusCategory.toEnum(m3.getBusId()));
-        m4.setBusCategory(BusCategory.toEnum(m4.getBusId()));
+       // m1.setBusCategory(BusCategory.toEnum(m1.getBusId()));
+       // m2.setBusCategory(BusCategory.toEnum(m2.getBusId()));
+       // m3.setBusCategory(BusCategory.toEnum(m3.getBusId()));
+        //m4.setBusCategory(BusCategory.toEnum(m4.getBusId()));
         //Adiciona o destino ao mapa
         m1.setDestiny(destinyRepository.getById(m1.getDestinyId()));
         m2.setDestiny(destinyRepository.getById(m2.getDestinyId()));

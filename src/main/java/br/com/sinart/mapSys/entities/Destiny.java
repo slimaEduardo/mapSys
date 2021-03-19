@@ -1,6 +1,6 @@
 package br.com.sinart.mapSys.entities;
 
-import br.com.sinart.mapSys.entities.enums.LineCategory;
+
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -23,12 +23,14 @@ public class Destiny implements Serializable {
     private String name;
     @Column(name="distancia_destino")
     private Double distance;
-    @Column(name="id_tipo_linha_destino")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_tipo_linha_destino", referencedColumnName = "id_linha")
+   // @Column(name="id_tipo_linha_destino")
     private LineCategory category;
     @Transient
     private Integer categoryId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destiny")
-   private Set<TravelMap> mapDestiny = new HashSet<>();
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "destiny")
+   //private Set<TravelMap> mapDestiny = new HashSet<>();
 
     public Destiny() {
     }
@@ -37,7 +39,7 @@ public class Destiny implements Serializable {
         this.name = name;
         this.distance = distance;
         this.categoryId = categoryId;
-        this.category = LineCategory.toEnum(this.categoryId);
+       // this.category = LineCategory.toEnum(this.categoryId);
     }
 
     public Integer getId() {
@@ -61,12 +63,12 @@ public class Destiny implements Serializable {
         this.distance = distance;
     }
 
-    public LineCategory getCategory() {
+   public LineCategory getCategory() {
         return category;
     }
 
     public void setCategory(LineCategory category) {
-        this.category = category;
+      this.category = category;
     }
 
     public Integer getCategoryId() {

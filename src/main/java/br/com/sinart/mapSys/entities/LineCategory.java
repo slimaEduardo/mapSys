@@ -1,34 +1,24 @@
 package br.com.sinart.mapSys.entities;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-@Table(name="empresa")
-public class Company implements Serializable {
+@Table(name="tipolinha")
+public class LineCategory implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_empresa")
+    @Column(name="id_linha")
     private Integer id;
-    @Column(name="nome_empresa")
+    @Column(name="nome_linha")
     private String name;
 
-   // @OneToMany(fetch = FetchType.EAGER, mappedBy="company")
-   // public Set<TravelMap> maps = new HashSet<>();
-
-
-    public Company() {
+    public LineCategory() {
     }
 
-    public Company(String name) {
+    public LineCategory(String name) {
         this.name = name;
     }
 
@@ -51,9 +41,9 @@ public class Company implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Company)) return false;
-        Company company = (Company) o;
-        return Objects.equals(getId(), company.getId()) && getName().equals(company.getName());
+        if (!(o instanceof LineCategory)) return false;
+        LineCategory that = (LineCategory) o;
+        return Objects.equals(getId(), that.getId()) && getName().equals(that.getName());
     }
 
     @Override

@@ -1,7 +1,8 @@
 package br.com.sinart.mapSys.dto;
 
+import br.com.sinart.mapSys.entities.BusCategory;
 import br.com.sinart.mapSys.entities.TravelMap;
-import br.com.sinart.mapSys.entities.enums.BusCategory;
+import br.com.sinart.mapSys.services.BusCategoryService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
@@ -12,10 +13,11 @@ import java.time.LocalTime;
 
 public class TravelMapDTO implements Serializable {
 
+    private BusCategoryService busCategoryService;
     private Integer id;
 
     private String companyName;
-    private BusCategory busCategory;
+    private String busCategoryName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate boardingDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm",timezone = "UTC-3")
@@ -29,11 +31,12 @@ public class TravelMapDTO implements Serializable {
     public TravelMapDTO(TravelMap obj) {
         this.id = obj.getId();
         this.companyName = obj.getCompany().getName();
-        this.busCategory = obj.getBusCategory();
+        this.busCategoryName = obj.getBusCategory().getName();
         this.boardingDate = obj.getBoardingDate();
         this.boardingTime = obj.getBoardingTime();
         this.destinyName = obj.getDestiny().getName();
         this.passQtt = obj.getPassQtt();
+        System.out.println("AQUI: " + obj.getCompany().getName());
     }
 
     public Integer getId() {
@@ -52,12 +55,12 @@ public class TravelMapDTO implements Serializable {
         this.companyName = companyName;
     }
 
-    public BusCategory getBusCategory() {
-        return busCategory;
+    public String getBusCategory() {
+        return busCategoryName;
     }
 
-    public void setBusCategory(BusCategory busCategory) {
-        this.busCategory = busCategory;
+    public void setBusCategory(String busCategoryName) {
+        this.busCategoryName = busCategoryName;
     }
 
     public LocalDate getBoardingDate() {
