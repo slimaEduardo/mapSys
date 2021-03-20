@@ -37,9 +37,9 @@ public class TravelMap implements Serializable {
     @Column(name="qnt_passageiros")
     private Integer passQtt;
 
-
+    @Transient
     private Integer companyId;
-
+    @Transient
     private Integer busId;
     @Transient
     private Integer destinyId;

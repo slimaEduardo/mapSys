@@ -12,6 +12,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -27,12 +30,12 @@ public class TravelMapResource {
    private DateTimeFormatter formatadorBarra = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 
-   // @GetMapping
-   // public ResponseEntity<List> findAll(){
-   //     List<TravelMap> list = service.findAll();
-  //      List<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect((Collectors.toList()));
-  //      return ResponseEntity.ok().body(listDto);
-  //  }
+  //  @GetMapping
+  //  public ResponseEntity<Page> findAll(){
+  //      List<TravelMap> list = service.findAll();
+ //       Page<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect((Collectors.toList()));
+ //       return ResponseEntity.ok().body(listDto);
+ //   }
 
     
     @GetMapping(value = "/{id}")
@@ -62,16 +65,18 @@ public class TravelMapResource {
         return ResponseEntity.noContent().build();
     }
 
-   @RequestMapping(method = RequestMethod.GET, value = "/date")
+   @RequestMapping(method = RequestMethod.GET)
    public ResponseEntity<Page<?>> findPage(
-           @RequestParam(value="localDate", defaultValue = "10/11/2020") LocalDate localDate,
+          @RequestParam(value="initialLocalDate",  defaultValue = "") LocalDate initialLocalDate,
+          @RequestParam(value="finalLocalDate",  defaultValue = "") LocalDate finalLocalDate,
            @RequestParam(value="page", defaultValue = "0") Integer page,
-           @RequestParam(value="linesPerPage", defaultValue = "24") Integer linesPerPage) {
-
-       Page<TravelMap> pageP = service.search(localDate, page,linesPerPage);
-       Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
-       return ResponseEntity.ok().body(pageDTO);
-   }
+           @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage) {
+    initialLocalDate = YearMonth.now().atDay(1);
+    finalLocalDate = LocalDate.now();
+    Page<TravelMap> pageP = service.search(initialLocalDate,finalLocalDate, page,linesPerPage);
+    Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
+    return ResponseEntity.ok().body(pageDTO);
+  }
 
 
 }

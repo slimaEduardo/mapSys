@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,8 +61,8 @@ public class TravelMapService {
 
     }
 
-    public Page<TravelMap> search (LocalDate localdate, Integer page, Integer linesPerPage){
+    public Page<TravelMap> search (LocalDate initialLocaldate,LocalDate finalLocalDate, Integer page, Integer linesPerPage){
         PageRequest pageRequest = PageRequest.of(page, linesPerPage);
-        return repository.findAllByBoardingDate(localdate,pageRequest);
+        return repository.findAllByBoardingDate(initialLocaldate,finalLocalDate,pageRequest);
     }
 }

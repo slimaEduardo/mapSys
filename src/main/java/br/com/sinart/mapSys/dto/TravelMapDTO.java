@@ -36,8 +36,7 @@ public class TravelMapDTO implements Serializable {
         this.boardingTime = obj.getBoardingTime();
         this.destinyName = obj.getDestiny().getName();
         this.passQtt = obj.getPassQtt();
-        System.out.println("AQUI: " + obj.getCompany().getName());
-    }
+       }
 
     public Integer getId() {
         return id;
