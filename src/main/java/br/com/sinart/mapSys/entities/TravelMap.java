@@ -20,7 +20,7 @@ public class TravelMap implements Serializable {
     @Column(name="id_viagem")
     private Integer id;
     @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="id_empresa_mapas")
+    @JoinColumn(name="id_empresa_mapas",  referencedColumnName ="id_empresa")
     private Company company;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_categoria_mapas", referencedColumnName = "id_categoria")

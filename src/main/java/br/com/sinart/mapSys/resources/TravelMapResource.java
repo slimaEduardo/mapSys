@@ -3,6 +3,7 @@ package br.com.sinart.mapSys.resources;
 
 import br.com.sinart.mapSys.dto.TravelMapDTO;
 import br.com.sinart.mapSys.entities.TravelMap;
+import br.com.sinart.mapSys.resources.utils.URL;
 import br.com.sinart.mapSys.services.TravelMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -92,6 +93,45 @@ public class TravelMapResource {
        LocalDate initialLocalDate = LocalDate.parse(start,formatadorBarra);
         LocalDate finalLocalDate = LocalDate.parse(end,formatadorBarra);
         Page<TravelMap> pageP = service.search(initialLocalDate,finalLocalDate, page,linesPerPage, orderBy, direction);
+        Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
+        return ResponseEntity.ok().body(pageDTO);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/search1")
+    public ResponseEntity<Page<?>> findByDestiny(
+            @RequestParam(value="therm",  defaultValue = "") String destiny,
+            @RequestParam(value="page", defaultValue = "0") Integer page,
+            @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
+            @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
+            @RequestParam(value="direction", defaultValue = "DESC")String direction) {
+        String decodedTherm = URL.decodeString(destiny);
+        Page<TravelMap> pageP = service.searchByDestiny(decodedTherm, page,linesPerPage, orderBy, direction);
+        Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
+        return ResponseEntity.ok().body(pageDTO);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/search2")
+    public ResponseEntity<Page<?>> findByCompany(
+            @RequestParam(value="therm",  defaultValue = "") String company,
+            @RequestParam(value="page", defaultValue = "0") Integer page,
+            @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
+            @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
+            @RequestParam(value="direction", defaultValue = "DESC")String direction) {
+        String decodedTherm = URL.decodeString(company);
+        System.out.println("Olha Isso: " + decodedTherm);
+        Page<TravelMap> pageP = service.searchByCompany(decodedTherm, page,linesPerPage, orderBy, direction);
+        Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
+        return ResponseEntity.ok().body(pageDTO);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/search3")
+    public ResponseEntity<Page<?>> findByCategory(
+            @RequestParam(value="therm",  defaultValue = "") Integer category,
+            @RequestParam(value="page", defaultValue = "0") Integer page,
+            @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
+            @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
+            @RequestParam(value="direction", defaultValue = "DESC")String direction) {
+        Page<TravelMap> pageP = service.searchByCategory(category, page,linesPerPage, orderBy, direction);
         Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
         return ResponseEntity.ok().body(pageDTO);
     }

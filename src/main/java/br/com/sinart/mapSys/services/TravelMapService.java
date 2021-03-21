@@ -67,4 +67,18 @@ public class TravelMapService {
         return repository.findAllByBoardingDate(initialLocaldate,finalLocalDate,pageRequest);
     }
 
+    public Page<TravelMap> searchByDestiny(String destiny,Integer page,Integer linesPerPage, String orderBy, String direction){
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        return repository.findAllByDestinyName(destiny,pageRequest);
+    }
+
+    public Page<TravelMap> searchByCompany(String company,Integer page,Integer linesPerPage, String orderBy, String direction){
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        return repository.findAllByCompanyName(company,pageRequest);
+    }
+
+    public Page<TravelMap> searchByCategory(Integer category,Integer page,Integer linesPerPage, String orderBy, String direction){
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        return repository.findAllByBusCategoryId(category,pageRequest);
+    }
 }
