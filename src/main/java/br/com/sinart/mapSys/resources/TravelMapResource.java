@@ -27,7 +27,7 @@ public class TravelMapResource {
     @Autowired
     private TravelMapService service;
 
-   private DateTimeFormatter formatadorBarra = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+   private DateTimeFormatter formatadorBarra = DateTimeFormatter.ofPattern("ddMMyyyy");
 
 
   //  @GetMapping
@@ -66,17 +66,34 @@ public class TravelMapResource {
     }
 
    @RequestMapping(method = RequestMethod.GET)
-   public ResponseEntity<Page<?>> findPage(
+   public ResponseEntity<Page<?>> findInMonth(
           @RequestParam(value="initialLocalDate",  defaultValue = "") LocalDate initialLocalDate,
           @RequestParam(value="finalLocalDate",  defaultValue = "") LocalDate finalLocalDate,
            @RequestParam(value="page", defaultValue = "0") Integer page,
-           @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage) {
+           @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
+          @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
+          @RequestParam(value="direction", defaultValue = "DESC")String direction) {
     initialLocalDate = YearMonth.now().atDay(1);
     finalLocalDate = LocalDate.now();
-    Page<TravelMap> pageP = service.search(initialLocalDate,finalLocalDate, page,linesPerPage);
+    Page<TravelMap> pageP = service.search(initialLocalDate,finalLocalDate, page,linesPerPage, orderBy, direction);
     Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
     return ResponseEntity.ok().body(pageDTO);
   }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/search")
+    public ResponseEntity<Page<?>> findByInterval(
+            @RequestParam(value="start",  defaultValue = "") String start,
+            @RequestParam(value="end",  defaultValue = "") String end,
+            @RequestParam(value="page", defaultValue = "0") Integer page,
+            @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
+            @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
+            @RequestParam(value="direction", defaultValue = "ASC")String direction) {
+
+       LocalDate initialLocalDate = LocalDate.parse(start,formatadorBarra);
+        LocalDate finalLocalDate = LocalDate.parse(end,formatadorBarra);
+        Page<TravelMap> pageP = service.search(initialLocalDate,finalLocalDate, page,linesPerPage, orderBy, direction);
+        Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
+        return ResponseEntity.ok().body(pageDTO);
+    }
 
 }

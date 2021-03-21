@@ -7,6 +7,7 @@ import br.com.sinart.mapSys.resources.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -61,8 +62,9 @@ public class TravelMapService {
 
     }
 
-    public Page<TravelMap> search (LocalDate initialLocaldate,LocalDate finalLocalDate, Integer page, Integer linesPerPage){
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage);
+    public Page<TravelMap> search (LocalDate initialLocaldate,LocalDate finalLocalDate, Integer page, Integer linesPerPage,String orderBy,String direction){
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return repository.findAllByBoardingDate(initialLocaldate,finalLocalDate,pageRequest);
     }
+
 }
