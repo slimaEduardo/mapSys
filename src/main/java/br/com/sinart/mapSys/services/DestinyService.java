@@ -3,7 +3,9 @@ package br.com.sinart.mapSys.services;
 import br.com.sinart.mapSys.entities.Destiny;
 import br.com.sinart.mapSys.repositories.DestinyRepository;
 import br.com.sinart.mapSys.resources.exceptions.ResourceNotFoundException;
+import br.com.sinart.mapSys.services.exceptions.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,9 +34,11 @@ public class DestinyService {
     }
 
     public void delete(Integer id){
-
+        try {
             repository.deleteById(id);
-
+        }catch (DataIntegrityViolationException e){
+         throw new DataIntegrityException("Não é possível excluir um destino com mapas cadastrados.");
+        }
     }
 
     public Destiny update(Integer id, Destiny obj) {

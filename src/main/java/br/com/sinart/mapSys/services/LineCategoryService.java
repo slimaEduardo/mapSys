@@ -3,7 +3,9 @@ package br.com.sinart.mapSys.services;
 import br.com.sinart.mapSys.entities.LineCategory;
 import br.com.sinart.mapSys.repositories.LineCategoryRepository;
 import br.com.sinart.mapSys.resources.exceptions.ResourceNotFoundException;
+import br.com.sinart.mapSys.services.exceptions.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,9 +32,11 @@ public class LineCategoryService {
     }
 
     public void delete(Integer id){
-
+        try {
             repository.deleteById(id);
-
+        }catch(DataIntegrityViolationException e){
+            throw new DataIntegrityException("Não é possível excluir uma categoria com mapas cadastrados.");
+        }
     }
 
     public LineCategory update(Integer id, LineCategory obj) {
