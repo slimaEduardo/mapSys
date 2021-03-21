@@ -1,6 +1,7 @@
 package br.com.sinart.mapSys.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 import javax.persistence.*;
@@ -22,7 +23,7 @@ public class TravelMap implements Serializable {
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="id_empresa_mapas",  referencedColumnName ="id_empresa")
     private Company company;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch =FetchType.EAGER)
     @JoinColumn(name = "id_categoria_mapas", referencedColumnName = "id_categoria")
     private BusCategory busCategory;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
@@ -36,6 +37,7 @@ public class TravelMap implements Serializable {
     private Destiny destiny;
     @Column(name="qnt_passageiros")
     private Integer passQtt;
+
 
     @Transient
     private Integer companyId;

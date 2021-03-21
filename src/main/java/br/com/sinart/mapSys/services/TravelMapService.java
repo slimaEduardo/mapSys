@@ -1,6 +1,7 @@
 package br.com.sinart.mapSys.services;
 
 import br.com.sinart.mapSys.dto.TravelMapDTO;
+import br.com.sinart.mapSys.entities.BusCategory;
 import br.com.sinart.mapSys.entities.TravelMap;
 import br.com.sinart.mapSys.repositories.TravelMapRepository;
 import br.com.sinart.mapSys.resources.exceptions.ResourceNotFoundException;
@@ -37,10 +38,10 @@ public class TravelMapService {
     }
 
     public TravelMap insert(TravelMap obj) {
-        //obj.setCompany(companyService.findById(obj.getCompanyId()));
-      //obj.setBusCategory(busCategoryService.findById(obj.getBusId()));
+        obj.setCompany(companyService.findById(obj.getCompanyId()));
         obj.setDestiny(destinyService.findById(obj.getDestinyId()));
-         return repository.save(obj);
+        obj.setBusCategory(busCategoryService.findById(obj.getBusId()));
+        return repository.save(obj);
     }
 
     public void delete(Integer id){
@@ -58,7 +59,12 @@ public class TravelMapService {
     }
 
     private void updateData(TravelMap entity, TravelMap obj) {
-        entity.setDestiny(obj.getDestiny());
+        entity.setDestiny(destinyService.findById(obj.getDestinyId()));
+        entity.setCompany(companyService.findById(obj.getCompanyId()));
+        entity.setBusCategory(busCategoryService.findById(obj.getBusId()));
+        entity.setPassQtt(obj.getPassQtt());
+        entity.setBoardingDate(obj.getBoardingDate());
+        entity.setBoardingTime(obj.getBoardingTime());
 
     }
 
