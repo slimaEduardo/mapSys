@@ -14,6 +14,8 @@ public class DestinyService {
 
     @Autowired
     private DestinyRepository repository;
+    @Autowired
+    private LineCategoryService lineCategoryService;
 
     public List<Destiny> findAll(){
         return repository.findAll();
@@ -25,7 +27,7 @@ public class DestinyService {
     }
 
     public Destiny insert(Destiny obj) {
-
+        obj.setCategory(lineCategoryService.findById(obj.getCategoryId()));
          return repository.save(obj);
     }
 
@@ -45,6 +47,7 @@ public class DestinyService {
 
     private void updateData(Destiny entity, Destiny obj) {
         entity.setName(obj.getName());
-        
+        entity.setCategory(lineCategoryService.findById(obj.getCategoryId()));
+        entity.setDistance(obj.getDistance());
     }
 }

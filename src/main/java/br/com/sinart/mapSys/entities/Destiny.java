@@ -23,10 +23,9 @@ public class Destiny implements Serializable {
     private String name;
     @Column(name="distancia_destino")
     private Double distance;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "id_tipo_linha_destino", referencedColumnName = "id_linha")
-   // @Column(name="id_tipo_linha_destino")
-    private LineCategory category;
+     private LineCategory category;
     @Transient
     private Integer categoryId;
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "destiny")
@@ -39,7 +38,6 @@ public class Destiny implements Serializable {
         this.name = name;
         this.distance = distance;
         this.categoryId = categoryId;
-       // this.category = LineCategory.toEnum(this.categoryId);
     }
 
     public Integer getId() {
