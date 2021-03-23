@@ -54,10 +54,10 @@ public class TestConfig  implements CommandLineRunner {
         Destiny d3 = new Destiny("PALMAS",1700.0,3);
         Destiny d4 = new Destiny("ASSUNÇÃO",2900.0,4);
         //cria os mapas
-        TravelMap m1 = new TravelMap(LocalDate.parse("13/10/2009", formatadorBarra), LocalTime.parse("06:30",formatadorHora),0,1,2,2);
-        TravelMap m2 = new TravelMap(LocalDate.parse("01/10/2009", formatadorBarra), LocalTime.parse("23:00",formatadorHora),12,4,1,4);
-        TravelMap m3 = new TravelMap(LocalDate.parse("10/10/2009", formatadorBarra),LocalTime.parse("12:00",formatadorHora),24,3,3,3);
-        TravelMap m4 = new TravelMap(LocalDate.parse("23/10/2009", formatadorBarra), LocalTime.parse("04:30",formatadorHora),100,2,1,1);
+       // TravelMap m1 = new TravelMap(LocalDate.parse("13/10/2009", formatadorBarra), LocalTime.parse("06:30",formatadorHora),0,1,2,2);
+       // TravelMap m2 = new TravelMap(LocalDate.parse("01/10/2009", formatadorBarra), LocalTime.parse("23:00",formatadorHora),12,4,1,4);
+      //  TravelMap m3 = new TravelMap(LocalDate.parse("10/10/2009", formatadorBarra),LocalTime.parse("12:00",formatadorHora),24,3,3,3);
+      //  TravelMap m4 = new TravelMap(LocalDate.parse("23/10/2009", formatadorBarra), LocalTime.parse("04:30",formatadorHora),100,2,1,1);
         //Adiciona as empresas aos mapas
         //m1.setCompany(companyRepository.getById(m1.getCompanyId()));
        // m2.setCompany(companyRepository.getById(m2.getCompanyId()));
@@ -69,17 +69,17 @@ public class TestConfig  implements CommandLineRunner {
        // m3.setBusCategory(BusCategory.toEnum(m3.getBusId()));
         //m4.setBusCategory(BusCategory.toEnum(m4.getBusId()));
         //Adiciona o destino ao mapa
-        m1.setDestiny(destinyRepository.getById(m1.getDestinyId()));
-        m2.setDestiny(destinyRepository.getById(m2.getDestinyId()));
-        m3.setDestiny(destinyRepository.getById(m3.getDestinyId()));
-        m4.setDestiny(destinyRepository.getById(m4.getDestinyId()));
+     //   m1.setDestiny(destinyRepository.getById(m1.getDestinyId()));
+      //  m2.setDestiny(destinyRepository.getById(m2.getDestinyId()));
+      //  m3.setDestiny(destinyRepository.getById(m3.getDestinyId()));
+      //  m4.setDestiny(destinyRepository.getById(m4.getDestinyId()));
 
         u1.setUserProfile(UserProfile.toEnum(u1.getProfileId()));
         u2.setUserProfile(UserProfile.toEnum(u2.getProfileId()));
         userRepository.saveAll(Arrays.asList(u1,u2));
         companyRepository.saveAll(Arrays.asList(c1,c2,c3,c4));
         destinyRepository.saveAll(Arrays.asList(d1,d2,d3,d4));
-        travelMapRepository.saveAll(Arrays.asList(m1,m2,m3,m4));
+       // travelMapRepository.saveAll(Arrays.asList(m1,m2,m3,m4));
 
     }
 }

@@ -20,10 +20,10 @@ public class TravelMap implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_viagem")
     private Integer id;
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="id_empresa_mapas",  referencedColumnName ="id_empresa")
     private Company company;
-    @OneToOne(fetch =FetchType.EAGER)
+    @OneToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "id_categoria_mapas", referencedColumnName = "id_categoria")
     private BusCategory busCategory;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
@@ -32,30 +32,33 @@ public class TravelMap implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     @Column(name="hora_viagem")
     private LocalTime boardingTime;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_destino_mapas")
     private Destiny destiny;
     @Column(name="qnt_passageiros")
     private Integer passQtt;
 
 
-    @Transient
-    private Integer companyId;
-    @Transient
-    private Integer busId;
-    @Transient
-    private Integer destinyId;
+    //@Transient
+    //private Integer companyId;
+   // @Transient
+    //private Integer busId;
+    //@Transient
+    //private Integer destinyId;
 
     public TravelMap() {
     }
 
-    public TravelMap(LocalDate boardingDate, LocalTime boardingTime, Integer passQtt, Integer companyId, Integer busId, Integer destinyId) {
+    public TravelMap(LocalDate boardingDate, LocalTime boardingTime, Integer passQtt, Company company, BusCategory busCategory, Destiny destiny) {
         this.boardingDate = boardingDate;
         this.boardingTime = boardingTime;
         this.passQtt = passQtt;
-        this.companyId = companyId;
-        this.busId = busId;
-        this.destinyId = destinyId;
+        this.company = company;
+        this.busCategory = busCategory;
+        this.destiny = destiny;
+       // this.companyId = companyId;
+        //this.busId = busId;
+        //this.destinyId = destinyId;
 
     }
 
@@ -101,29 +104,29 @@ public class TravelMap implements Serializable {
         this.passQtt = passQtt;
     }
 
-    public Integer getCompanyId() {
-        return companyId;
-    }
+    //public Integer getCompanyId() {
+   //     return companyId;
+  //  }
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
+   // public void setCompanyId(Integer companyId) {
+   //     this.companyId = companyId;
+  //  }
 
-    public Integer getBusId() {
-        return busId;
-    }
+   // public Integer getBusId() {
+    //    return busId;
+   // }
 
-    public void setBusId(Integer busId) {
-        this.busId = busId;
-    }
+   // public void setBusId(Integer busId) {
+   //     this.busId = busId;
+   // }
 
-    public Integer getDestinyId() {
-        return destinyId;
-    }
+   // public Integer getDestinyId() {
+   //     return destinyId;
+  //  }
 
-    public void setDestinyId(Integer destinyId) {
-        this.destinyId = destinyId;
-    }
+  //  public void setDestinyId(Integer destinyId) {
+   //     this.destinyId = destinyId;
+  //  }
 
     public Integer getId() {
         return id;

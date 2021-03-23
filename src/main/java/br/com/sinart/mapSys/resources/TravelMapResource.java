@@ -2,6 +2,7 @@ package br.com.sinart.mapSys.resources;
 
 
 import br.com.sinart.mapSys.dto.TravelMapDTO;
+import br.com.sinart.mapSys.dto.TravelMapNewDTO;
 import br.com.sinart.mapSys.entities.TravelMap;
 import br.com.sinart.mapSys.resources.utils.URL;
 import br.com.sinart.mapSys.services.TravelMapService;
@@ -31,14 +32,7 @@ public class TravelMapResource {
    private DateTimeFormatter formatadorBarra = DateTimeFormatter.ofPattern("ddMMyyyy");
 
 
-  //  @GetMapping
-  //  public ResponseEntity<Page> findAll(){
-  //      List<TravelMap> list = service.findAll();
- //       Page<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect((Collectors.toList()));
- //       return ResponseEntity.ok().body(listDto);
- //   }
 
-    
     @GetMapping(value = "/{id}")
     public ResponseEntity<TravelMapDTO> findById(@PathVariable Integer id) {
         TravelMap obj = service.findById(id);
@@ -47,7 +41,8 @@ public class TravelMapResource {
     }
 
     @PostMapping
-    public ResponseEntity<TravelMapDTO> insert( @RequestBody TravelMap obj) {
+    public ResponseEntity<TravelMapDTO> insert( @RequestBody TravelMapNewDTO objNewDto) {
+        TravelMap obj = service.fromDTO(objNewDto);
         obj = service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         TravelMapDTO objDto = new TravelMapDTO(obj);
@@ -55,9 +50,10 @@ public class TravelMapResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<TravelMap> update(@PathVariable Integer id,@RequestBody TravelMap obj){
-        obj = service.update(id, obj);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<TravelMapDTO> update(@PathVariable Integer id,@RequestBody TravelMapNewDTO obj){
+        TravelMap objUpdated = service.update(id, obj);
+        TravelMapDTO objDto = new TravelMapDTO(objUpdated) ;//Aqui o mapa já foi atualizado. foi adicionado apenas para apresentar ao usuário
+        return ResponseEntity.ok().body(objDto);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -99,27 +95,24 @@ public class TravelMapResource {
 
     @RequestMapping(method = RequestMethod.GET, value = "/search1")
     public ResponseEntity<Page<?>> findByDestiny(
-            @RequestParam(value="therm",  defaultValue = "") String destiny,
+            @RequestParam(value="therm",  defaultValue = "") Integer destiny,
             @RequestParam(value="page", defaultValue = "0") Integer page,
             @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
             @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
             @RequestParam(value="direction", defaultValue = "DESC")String direction) {
-        String decodedTherm = URL.decodeString(destiny);
-        Page<TravelMap> pageP = service.searchByDestiny(decodedTherm, page,linesPerPage, orderBy, direction);
+        Page<TravelMap> pageP = service.searchByDestiny(destiny, page,linesPerPage, orderBy, direction);
         Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
         return ResponseEntity.ok().body(pageDTO);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search2")
     public ResponseEntity<Page<?>> findByCompany(
-            @RequestParam(value="therm",  defaultValue = "") String company,
+            @RequestParam(value="therm",  defaultValue = "") Integer company,
             @RequestParam(value="page", defaultValue = "0") Integer page,
             @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
             @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
             @RequestParam(value="direction", defaultValue = "DESC")String direction) {
-        String decodedTherm = URL.decodeString(company);
-        System.out.println("Olha Isso: " + decodedTherm);
-        Page<TravelMap> pageP = service.searchByCompany(decodedTherm, page,linesPerPage, orderBy, direction);
+        Page<TravelMap> pageP = service.searchByCompany(company, page,linesPerPage, orderBy, direction);
         Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
         return ResponseEntity.ok().body(pageDTO);
     }

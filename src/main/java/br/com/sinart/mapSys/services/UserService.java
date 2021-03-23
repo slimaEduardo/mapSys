@@ -44,13 +44,15 @@ public class UserService {
     }
 
     private void updateData(User entity, User obj) {
-
         entity.setName(obj.getName());
 
     }
 
     public User fromDTO(UserNewDTO objDto) {
-        User usr = new User(objDto.getName(), objDto.getUserName(),objDto.getPassword(), objDto.getProfileId());
+        User usr = new User(objDto.getName(),
+                            objDto.getUserName(),
+                            objDto.getPassword(),
+                            objDto.getProfileId());
         return usr;
     }
 }

@@ -1,6 +1,7 @@
 package br.com.sinart.mapSys.services;
 
 import br.com.sinart.mapSys.dto.TravelMapDTO;
+import br.com.sinart.mapSys.dto.TravelMapNewDTO;
 import br.com.sinart.mapSys.entities.BusCategory;
 import br.com.sinart.mapSys.entities.TravelMap;
 import br.com.sinart.mapSys.repositories.TravelMapRepository;
@@ -38,9 +39,6 @@ public class TravelMapService {
     }
 
     public TravelMap insert(TravelMap obj) {
-        obj.setCompany(companyService.findById(obj.getCompanyId()));
-        obj.setDestiny(destinyService.findById(obj.getDestinyId()));
-        obj.setBusCategory(busCategoryService.findById(obj.getBusId()));
         return repository.save(obj);
     }
 
@@ -50,15 +48,13 @@ public class TravelMapService {
 
     }
 
-    public TravelMap update(Integer id, TravelMap obj) {
-
+    public TravelMap update(Integer id, TravelMapNewDTO obj) {
             TravelMap entity = repository.getOne(id);
             updateData(entity,obj);
             return repository.save(entity);
-
     }
 
-    private void updateData(TravelMap entity, TravelMap obj) {
+    private void updateData(TravelMap entity, TravelMapNewDTO obj) {
         entity.setDestiny(destinyService.findById(obj.getDestinyId()));
         entity.setCompany(companyService.findById(obj.getCompanyId()));
         entity.setBusCategory(busCategoryService.findById(obj.getBusId()));
@@ -73,18 +69,28 @@ public class TravelMapService {
         return repository.findAllByBoardingDate(initialLocaldate,finalLocalDate,pageRequest);
     }
 
-    public Page<TravelMap> searchByDestiny(String destiny,Integer page,Integer linesPerPage, String orderBy, String direction){
+    public Page<TravelMap> searchByDestiny(Integer destiny,Integer page,Integer linesPerPage, String orderBy, String direction){
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAllByDestinyName(destiny,pageRequest);
+        return repository.findAllByDestinyId(destiny,pageRequest);
     }
 
-    public Page<TravelMap> searchByCompany(String company,Integer page,Integer linesPerPage, String orderBy, String direction){
+    public Page<TravelMap> searchByCompany(Integer company,Integer page,Integer linesPerPage, String orderBy, String direction){
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAllByCompanyName(company,pageRequest);
+        return repository.findAllByCompanyId(company,pageRequest);
     }
 
     public Page<TravelMap> searchByCategory(Integer category,Integer page,Integer linesPerPage, String orderBy, String direction){
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return repository.findAllByBusCategoryId(category,pageRequest);
+    }
+
+    public TravelMap fromDTO(TravelMapNewDTO objDto) {
+        TravelMap map = new TravelMap(objDto.getBoardingDate(),
+                objDto.getBoardingTime(),
+                objDto.getPassQtt(),
+                companyService.findById(objDto.getCompanyId()),
+                busCategoryService.findById(objDto.getBusId()),
+                destinyService.findById(objDto.getDestinyId()));
+        return map;
     }
 }
