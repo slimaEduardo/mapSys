@@ -2,6 +2,7 @@ package br.com.sinart.mapSys.resources;
 
 
 import br.com.sinart.mapSys.dto.DestinyDTO;
+import br.com.sinart.mapSys.dto.DestinyNewDTO;
 import br.com.sinart.mapSys.dto.TravelMapDTO;
 import br.com.sinart.mapSys.entities.Destiny;
 import br.com.sinart.mapSys.services.DestinyService;
@@ -31,23 +32,25 @@ public class DestinyResource {
 
     
     @GetMapping(value = "/{id}")
-    public ResponseEntity<DestinyDTO> findById(@PathVariable Integer id) {
+    public ResponseEntity<?> findById(@PathVariable Integer id) {
         Destiny obj = service.findById(id);
         DestinyDTO objDto = new DestinyDTO(obj);
         return ResponseEntity.ok().body(objDto);
     }
 
     @PostMapping
-    public ResponseEntity<Destiny> insert( @RequestBody Destiny obj) {
+    public ResponseEntity<Integer> insert( @RequestBody DestinyNewDTO objNew) {
+        Destiny obj = service.fromDTO(objNew);
         obj = service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.created(uri).body(obj);
+        return ResponseEntity.created(uri).body(obj.getId());
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Destiny> update(@PathVariable Integer id,@RequestBody Destiny obj){
-        obj = service.update(id, obj);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<DestinyDTO> update(@PathVariable Integer id,@RequestBody DestinyNewDTO objNew){
+        Destiny obj = service.update(id, objNew);
+        DestinyDTO objDto = new DestinyDTO(obj);
+        return ResponseEntity.ok().body(objDto);
     }
 
     @DeleteMapping(value = "/{id}")

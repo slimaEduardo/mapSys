@@ -2,8 +2,8 @@ package br.com.sinart.mapSys.services;
 
 import br.com.sinart.mapSys.entities.BusCategory;
 import br.com.sinart.mapSys.repositories.BusCategoryRepository;
-import br.com.sinart.mapSys.resources.exceptions.ResourceNotFoundException;
 import br.com.sinart.mapSys.services.exceptions.DataIntegrityException;
+import br.com.sinart.mapSys.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class BusCategoryService {
 
     public BusCategory findById(Integer id) {
         Optional<BusCategory> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Categoria dom id " + id + " não encontrada."));
     }
 
     public BusCategory insert(BusCategory obj) {

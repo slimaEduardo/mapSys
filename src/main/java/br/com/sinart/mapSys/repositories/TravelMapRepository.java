@@ -24,9 +24,9 @@ public interface TravelMapRepository extends JpaRepository<TravelMap, Integer> {
     @Transactional(readOnly = true)
     Page<TravelMap> findAllById(Integer id,Pageable pageable);
 
-    @Query("SELECT obj FROM TravelMap obj WHERE obj.destiny.id = ?1")
+    //@Query("SELECT obj FROM TravelMap obj WHERE obj.destiny.id = ?1")
     Page<TravelMap> findAllByDestinyId(Integer destiny, Pageable pageable);
-    @Query("SELECT obj FROM TravelMap obj WHERE obj.company.id = ?1")
+    //@Query("SELECT obj FROM TravelMap obj WHERE obj.company.id = ?1")
     Page<TravelMap> findAllByCompanyId(Integer company, Pageable pageable);
 
     Page<TravelMap> findAllByBusCategoryId(Integer category, Pageable pageable);

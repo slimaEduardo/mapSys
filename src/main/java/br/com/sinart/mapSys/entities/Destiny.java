@@ -22,22 +22,22 @@ public class Destiny implements Serializable {
     @Column(name="nome_destino")
     private String name;
     @Column(name="distancia_destino")
-    private Double distance;
+    private Integer distance;
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "id_tipo_linha_destino", referencedColumnName = "id_linha")
      private LineCategory category;
-    @Transient
-    private Integer categoryId;
+    //@Transient
+    //private Integer categoryId;
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "destiny")
    //private Set<TravelMap> mapDestiny = new HashSet<>();
 
     public Destiny() {
     }
 
-    public Destiny(String name, Double distance, Integer categoryId) {
+    public Destiny(String name, Integer distance, LineCategory category) {
         this.name = name;
         this.distance = distance;
-        this.categoryId = categoryId;
+        this.category = category;
     }
 
     public Integer getId() {
@@ -53,11 +53,11 @@ public class Destiny implements Serializable {
         this.name = name;
     }
 
-    public Double getDistance() {
+    public Integer getDistance() {
         return distance;
     }
 
-    public void setDistance(Double distance) {
+    public void setDistance(Integer distance) {
         this.distance = distance;
     }
 
@@ -69,13 +69,13 @@ public class Destiny implements Serializable {
       this.category = category;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
-    }
+    //public Integer getCategoryId() {
+      //  return categoryId;
+    //}
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
+    //public void setCategoryId(Integer categoryId) {
+      //  this.categoryId = categoryId;
+    //}
 
     @Override
     public boolean equals(Object o) {

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -30,13 +31,19 @@ public class UserResource {
     // u.setUserProfile(UserProfile.toEnum(u.getProfileId()));//usar esse método no insert do usuário
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Optional<User>> findById(@PathVariable Integer id) {
-        Optional<User> obj = service.findById(id);
+    public ResponseEntity<User> findById(@PathVariable Integer id) {
+        User obj = service.findById(id);
+        return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping(value = "/find")
+    public ResponseEntity<User> findByUserName(@RequestParam(value="user", defaultValue = "") String userName) {
+        User obj = service.findByUserName(userName);
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
-    public ResponseEntity<User> insert( @RequestBody UserNewDTO objDto) {
+    public ResponseEntity<User> insert(@Valid @RequestBody UserNewDTO objDto) {
         User obj = service.fromDTO(objDto);
         obj = service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -44,9 +51,9 @@ public class UserResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<User> update(@PathVariable Integer id,@RequestBody User obj){
-        obj = service.update(id, obj);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<User> update(@PathVariable Integer id,@RequestBody UserNewDTO obj){
+       User objUpdated = service.update(id, obj);
+        return ResponseEntity.ok().body(objUpdated);
     }
 
     @DeleteMapping(value = "/{id}")

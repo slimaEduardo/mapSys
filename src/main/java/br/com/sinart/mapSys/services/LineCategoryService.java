@@ -2,8 +2,8 @@ package br.com.sinart.mapSys.services;
 
 import br.com.sinart.mapSys.entities.LineCategory;
 import br.com.sinart.mapSys.repositories.LineCategoryRepository;
-import br.com.sinart.mapSys.resources.exceptions.ResourceNotFoundException;
 import br.com.sinart.mapSys.services.exceptions.DataIntegrityException;
+import br.com.sinart.mapSys.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class LineCategoryService {
 
     public LineCategory findById(Integer id) {
         Optional<LineCategory> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Categoria com id " + id + " não encontrada."));
     }
 
     public LineCategory insert(LineCategory obj) {

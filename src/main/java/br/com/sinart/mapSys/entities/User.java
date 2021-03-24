@@ -22,16 +22,16 @@ public class User implements Serializable {
     private String password;
     @Column(name="flag_admin")
     private UserProfile userProfile;
-    private Integer profileId;
+
 
     public User(
     ){}
 
-    public User(String name, String userName, String password, Integer profileId) {
+    public User(String name, String userName, String password, UserProfile userProfile) {
         this.name = name;
         this.userName = userName;
         this.password = password;
-        this.profileId = profileId;
+        this.userProfile = userProfile;
 
     }
 
@@ -73,14 +73,6 @@ public class User implements Serializable {
 
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
-    }
-
-    public Integer getProfileId() {
-        return profileId;
-    }
-
-    public void setProfileId(Integer profileId) {
-        this.profileId = profileId;
     }
 
 

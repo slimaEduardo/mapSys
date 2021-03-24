@@ -3,7 +3,10 @@ package br.com.sinart.mapSys.dto;
 import br.com.sinart.mapSys.resources.utils.UserInsert;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @UserInsert
@@ -16,7 +19,9 @@ public class UserNewDTO implements Serializable {
     private String userName;
     @NotEmpty(message = "Campo Obrigatório.")
     private String password;
-    @NotEmpty(message = "Campo Obrigatório.")
+    @NotNull(message = "Campo Obrigatório.")
+    @Min(value = 1, message = "O valor tem quer ser 1 ou 2")
+    @Max(value = 2, message = "O valor tem quer ser 1 ou 2")
     private Integer profileId;
 
     public UserNewDTO() {

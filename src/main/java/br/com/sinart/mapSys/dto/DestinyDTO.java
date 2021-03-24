@@ -9,7 +9,7 @@ public class DestinyDTO implements Serializable {
 
     private Integer id;
     private String name;
-    private Double distance;
+    private Integer distance;
     private String typeLine;
 
     public DestinyDTO() {
@@ -38,11 +38,11 @@ public class DestinyDTO implements Serializable {
         this.name = name;
     }
 
-    public Double getDistance() {
+    public Integer getDistance() {
         return distance;
     }
 
-    public void setDistance(Double distance) {
+    public void setDistance(Integer distance) {
         this.distance = distance;
     }
 

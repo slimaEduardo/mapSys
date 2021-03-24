@@ -5,7 +5,7 @@ import br.com.sinart.mapSys.dto.TravelMapNewDTO;
 import br.com.sinart.mapSys.entities.BusCategory;
 import br.com.sinart.mapSys.entities.TravelMap;
 import br.com.sinart.mapSys.repositories.TravelMapRepository;
-import br.com.sinart.mapSys.resources.exceptions.ResourceNotFoundException;
+import br.com.sinart.mapSys.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +35,7 @@ public class TravelMapService {
 
     public TravelMap findById(Integer id) {
         Optional<TravelMap> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Mapa com id " + id + " não encontrado."));
     }
 
     public TravelMap insert(TravelMap obj) {
@@ -85,12 +85,12 @@ public class TravelMapService {
     }
 
     public TravelMap fromDTO(TravelMapNewDTO objDto) {
-        TravelMap map = new TravelMap(objDto.getBoardingDate(),
+        return new TravelMap(objDto.getBoardingDate(),
                 objDto.getBoardingTime(),
                 objDto.getPassQtt(),
                 companyService.findById(objDto.getCompanyId()),
                 busCategoryService.findById(objDto.getBusId()),
                 destinyService.findById(objDto.getDestinyId()));
-        return map;
+
     }
 }
