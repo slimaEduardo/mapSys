@@ -42,4 +42,6 @@ public class ResourceExceptionHandler {
         StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
+
+
 }

@@ -1,15 +1,8 @@
 package br.com.sinart.mapSys.entities;
 
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name="destino")
@@ -26,10 +19,7 @@ public class Destiny implements Serializable {
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "id_tipo_linha_destino", referencedColumnName = "id_linha")
      private LineCategory category;
-    //@Transient
-    //private Integer categoryId;
-    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "destiny")
-   //private Set<TravelMap> mapDestiny = new HashSet<>();
+
 
     public Destiny() {
     }
@@ -68,14 +58,6 @@ public class Destiny implements Serializable {
     public void setCategory(LineCategory category) {
       this.category = category;
     }
-
-    //public Integer getCategoryId() {
-      //  return categoryId;
-    //}
-
-    //public void setCategoryId(Integer categoryId) {
-      //  this.categoryId = categoryId;
-    //}
 
     @Override
     public boolean equals(Object o) {

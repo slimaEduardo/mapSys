@@ -3,18 +3,17 @@ package br.com.sinart.mapSys.resources;
 
 import br.com.sinart.mapSys.dto.DestinyDTO;
 import br.com.sinart.mapSys.dto.DestinyNewDTO;
-import br.com.sinart.mapSys.dto.TravelMapDTO;
 import br.com.sinart.mapSys.entities.Destiny;
 import br.com.sinart.mapSys.services.DestinyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping(value="/destinies")
@@ -24,9 +23,12 @@ public class DestinyResource {
     private DestinyService service;
 
     @GetMapping
-    public ResponseEntity<List> findAll(){
-        List<Destiny> list = service.findAll();
-        List<DestinyDTO> listDto = list.stream().map(obj -> new DestinyDTO(obj)).collect((Collectors.toList()));
+    public ResponseEntity<Page<?>> findAll(@RequestParam(value="page", defaultValue = "0") Integer page,
+                                           @RequestParam(value="linesPerPage", defaultValue = "25") Integer linesPerPage,
+                                           @RequestParam(value="orderBy", defaultValue = "name")String orderBy,
+                                           @RequestParam(value="direction", defaultValue = "ASC")String direction){
+        Page<Destiny> destinyPage = service.findAll(page,linesPerPage, orderBy, direction);
+        Page<DestinyDTO> listDto = destinyPage.map(obj -> new DestinyDTO(obj));
         return ResponseEntity.ok().body(listDto);
     }
 
@@ -37,7 +39,7 @@ public class DestinyResource {
         DestinyDTO objDto = new DestinyDTO(obj);
         return ResponseEntity.ok().body(objDto);
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Integer> insert( @RequestBody DestinyNewDTO objNew) {
         Destiny obj = service.fromDTO(objNew);
@@ -46,6 +48,7 @@ public class DestinyResource {
         return ResponseEntity.created(uri).body(obj.getId());
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<DestinyDTO> update(@PathVariable Integer id,@RequestBody DestinyNewDTO objNew){
         Destiny obj = service.update(id, objNew);
@@ -53,6 +56,7 @@ public class DestinyResource {
         return ResponseEntity.ok().body(objDto);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);

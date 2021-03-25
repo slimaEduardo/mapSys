@@ -7,6 +7,9 @@ import br.com.sinart.mapSys.services.exceptions.DataIntegrityException;
 import br.com.sinart.mapSys.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +23,9 @@ public class DestinyService {
     @Autowired
     private LineCategoryService lineCategoryService;
 
-    public List<Destiny> findAll(){
-        return repository.findAll();
+    public Page<Destiny> findAll(Integer page, Integer linesPerPage, String orderBy, String direction){
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return repository.findAll(pageRequest);
     }
 
     public Destiny findById(Integer id) {

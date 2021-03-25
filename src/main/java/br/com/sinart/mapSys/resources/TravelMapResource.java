@@ -9,6 +9,7 @@ import br.com.sinart.mapSys.services.TravelMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -49,6 +50,7 @@ public class TravelMapResource {
         return ResponseEntity.created(uri).body(objDto);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<TravelMapDTO> update(@PathVariable Integer id,@RequestBody TravelMapNewDTO obj){
         TravelMap objUpdated = service.update(id, obj);
@@ -56,6 +58,7 @@ public class TravelMapResource {
         return ResponseEntity.ok().body(objDto);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);

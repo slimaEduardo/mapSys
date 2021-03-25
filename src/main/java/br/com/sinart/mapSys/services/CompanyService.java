@@ -6,6 +6,9 @@ import br.com.sinart.mapSys.services.exceptions.DataIntegrityException;
 import br.com.sinart.mapSys.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +20,6 @@ public class CompanyService {
     @Autowired
     private CompanyRepository repository;
 
-    public List<Company> findAll(){
-        return repository.findAll();
-    }
 
     public Company findById(Integer id) {
         Optional<Company> obj = repository.findById(id);
@@ -41,11 +41,15 @@ public class CompanyService {
     }
 
     public Company update(Integer id, Company obj) {
-
             Company entity = repository.getOne(id);
             updateData(entity,obj);
             return repository.save(entity);
 
+    }
+
+    public Page<Company> findAll(Integer page, Integer linesPerPage,String orderBy,String direction){
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return repository.findAll(pageRequest);
     }
 
     private void updateData(Company entity, Company obj) {
