@@ -60,8 +60,10 @@ public class UserService {
 
     private void updateData(User entity, UserNewDTO obj) {
         entity.setName(obj.getName());
-        entity.setUserProfile(UserProfile.toEnum(obj.getProfileId()));
         entity.setPassword(pe.encode(obj.getPassword()));
+       if(entity.getUserProfile() == UserProfile.ADMIN) {
+           entity.setUserProfile(UserProfile.toEnum(obj.getProfileId()));
+       }
 
     }
 
