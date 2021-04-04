@@ -36,36 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-/*    private static final String[] PUBLIC_MATCHERS = {
+    private static final String[] PUBLIC_MATCHERS = {
             "/**"
     };
 
-    private static final String[] PUBLIC_MATCHERS_GET = {
-            "/users/**",
-            "/maps/**",
-            "/companies/**",
-            "/destinies/**",
-            "/lines/**",
-            "/categories/**"
-    };
-
-    private static final String[] PUBLIC_MATCHERS_POST = {
-            "/users/**",
-            "/maps/**",
-            "/companies/**",
-            "/destinies/**",
-            "/lines/**",
-            "/categories/**"
-    };
-
-    private static final String[] PUBLIC_MATCHERS_PUT = {
-            "/users/**",
-            "/maps/**",
-            "/companies/**",
-            "/destinies/**",
-            "/lines/**",
-            "/categories/**"
-    };*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -75,7 +49,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
 
         http.cors().and().csrf().disable();
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS).permitAll()
+                .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS).permitAll()
+                .antMatchers(HttpMethod.PUT, PUBLIC_MATCHERS).permitAll()
+                .antMatchers(HttpMethod.DELETE, PUBLIC_MATCHERS).permitAll()
+                .anyRequest().authenticated();
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
         http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

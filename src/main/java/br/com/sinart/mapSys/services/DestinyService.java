@@ -33,6 +33,11 @@ public class DestinyService {
         return obj.orElseThrow(() -> new ObjectNotFoundException("Id não encontrada: " + id));
     }
 
+    public List<Destiny> findByName(String name) {
+        List<Destiny> obj = repository.findAllByName(name);
+        return obj;
+    }
+
     public Destiny insert(Destiny obj) {
 
          return repository.save(obj);

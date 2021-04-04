@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 
 @RestController
@@ -28,18 +29,16 @@ public class DestinyResource {
                                            @RequestParam(value="orderBy", defaultValue = "name")String orderBy,
                                            @RequestParam(value="direction", defaultValue = "ASC")String direction){
         Page<Destiny> destinyPage = service.findAll(page,linesPerPage, orderBy, direction);
-        Page<DestinyDTO> listDto = destinyPage.map(obj -> new DestinyDTO(obj));
-        return ResponseEntity.ok().body(listDto);
+        return ResponseEntity.ok().body(destinyPage);
     }
 
     
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> findById(@PathVariable Integer id) {
         Destiny obj = service.findById(id);
-        DestinyDTO objDto = new DestinyDTO(obj);
-        return ResponseEntity.ok().body(objDto);
+        return ResponseEntity.ok().body(obj);
     }
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Integer> insert( @RequestBody DestinyNewDTO objNew) {
         Destiny obj = service.fromDTO(objNew);
@@ -48,20 +47,23 @@ public class DestinyResource {
         return ResponseEntity.created(uri).body(obj.getId());
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+   // @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<DestinyDTO> update(@PathVariable Integer id,@RequestBody DestinyNewDTO objNew){
+    public ResponseEntity<Destiny> update(@PathVariable Integer id,@RequestBody DestinyNewDTO objNew){
         Destiny obj = service.update(id, objNew);
-        DestinyDTO objDto = new DestinyDTO(obj);
-        return ResponseEntity.ok().body(objDto);
+        return ResponseEntity.ok().body(obj);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-
+    @RequestMapping(method = RequestMethod.GET, value = "/search")
+    public  ResponseEntity<List<Destiny>> findByName(@RequestParam(value="therm") String name){
+        List<Destiny> list = service.findByName(name);
+        return ResponseEntity.ok().body(list);
+    }
 }

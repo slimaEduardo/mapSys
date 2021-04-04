@@ -23,7 +23,7 @@ public class BusCategoryService {
 
     public BusCategory findById(Integer id) {
         Optional<BusCategory> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException("Categoria dom id " + id + " não encontrada."));
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Categoria com id " + id + " não encontrada."));
     }
 
     public BusCategory insert(BusCategory obj) {

@@ -26,7 +26,7 @@ public class TravelMap implements Serializable {
     @OneToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "id_categoria_mapas", referencedColumnName = "id_categoria")
     private BusCategory busCategory;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name="data_viagem")
     private LocalDate boardingDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")

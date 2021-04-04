@@ -16,7 +16,7 @@ public class TravelMapNewDTO implements Serializable {
     @NotEmpty(message = "Campo Obrigatório.")
     private Integer destinyId;
     @NotEmpty(message = "Campo Obrigatório.")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate boardingDate;
     @NotEmpty(message = "Campo Obrigatório.")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")

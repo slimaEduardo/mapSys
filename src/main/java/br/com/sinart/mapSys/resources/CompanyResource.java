@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -22,13 +24,14 @@ public class CompanyResource {
     private CompanyService service;
 
 
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<CompanyDTO> findById(@PathVariable Integer id) {
         Company obj = service.findById(id);
         CompanyDTO objDto = new CompanyDTO(obj);
         return ResponseEntity.ok().body(objDto);
     }
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Company> insert( @RequestBody Company obj) {
         obj = service.insert(obj);
@@ -36,14 +39,14 @@ public class CompanyResource {
         return ResponseEntity.created(uri).body(obj);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<Company> update(@PathVariable Integer id,@RequestBody Company obj){
         obj = service.update(id, obj);
         return ResponseEntity.ok().body(obj);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
@@ -52,13 +55,12 @@ public class CompanyResource {
 
 
     @GetMapping
-    public ResponseEntity<Page<?>> findInMonth(
-            @RequestParam(value="page", defaultValue = "0") Integer page,
-            @RequestParam(value="linesPerPage", defaultValue = "25") Integer linesPerPage,
-            @RequestParam(value="orderBy", defaultValue = "name")String orderBy,
-            @RequestParam(value="direction", defaultValue = "ASC")String direction) {
-        Page<Company> pageP = service.findAll(page,linesPerPage, orderBy, direction);
-        Page<CompanyDTO> pageDTO = pageP.map(obj -> new CompanyDTO(obj));
+    public ResponseEntity<Page<?>> findAll( @RequestParam(value="page", defaultValue = "0") Integer page,
+                                            @RequestParam(value="linesPerPage", defaultValue = "10") Integer linesPerPage,
+                                            @RequestParam(value="orderBy", defaultValue = "id")String orderBy,
+                                            @RequestParam(value="direction", defaultValue = "ASC")String direction) {
+        Page<Company> _page =  service.findAll(page,linesPerPage, orderBy, direction);
+        Page<CompanyDTO> pageDTO = _page.map(obj -> new CompanyDTO(obj));
         return ResponseEntity.ok().body(pageDTO);
     }
 

@@ -18,7 +18,7 @@ public class TravelMapDTO implements Serializable {
 
     private String companyName;
     private String busCategoryName;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate boardingDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm",timezone = "UTC-3")
     private LocalTime boardingTime;
