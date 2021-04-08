@@ -27,4 +27,6 @@ public interface TravelMapRepository extends JpaRepository<TravelMap, Integer> {
     Page<TravelMap> findAllByCompanyId(Integer company, Pageable pageable);
     @Transactional(readOnly = true)
     Page<TravelMap> findAllByBusCategoryId(Integer category, Pageable pageable);
+    @Query("SELECT obj FROM TravelMap obj WHERE obj.boardingDate >= ?1 AND obj.boardingDate <= ?2")
+    List<TravelMap> findAllinMonth(LocalDate initialLocalDate, LocalDate finalLocalDate);
 }

@@ -62,7 +62,7 @@ public class DestinyResource {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search")
-    public  ResponseEntity<List<Destiny>> findByName(@RequestParam(value="therm") String name){
+    public  ResponseEntity<List<Destiny>> findByName(@RequestParam(value="term") String name){
         List<Destiny> list = service.findByName(name);
         return ResponseEntity.ok().body(list);
     }

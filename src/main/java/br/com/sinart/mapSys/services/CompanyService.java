@@ -1,6 +1,7 @@
 package br.com.sinart.mapSys.services;
 
 import br.com.sinart.mapSys.entities.Company;
+import br.com.sinart.mapSys.entities.Destiny;
 import br.com.sinart.mapSys.repositories.CompanyRepository;
 import br.com.sinart.mapSys.services.exceptions.DataIntegrityException;
 import br.com.sinart.mapSys.services.exceptions.ObjectNotFoundException;
@@ -55,5 +56,10 @@ public class CompanyService {
     private void updateData(Company entity, Company obj) {
         entity.setName(obj.getName());
         
+    }
+
+    public List<Company> findByName(String name) {
+        List<Company> obj = repository.findAllByName(name);
+        return obj;
     }
 }

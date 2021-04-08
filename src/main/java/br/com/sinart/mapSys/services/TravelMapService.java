@@ -93,4 +93,8 @@ public class TravelMapService {
                 destinyService.findById(objDto.getDestinyId()));
 
     }
+
+    public List<TravelMap> findAllInMonth(LocalDate initialLocalDate, LocalDate finalLocalDate) {
+        return repository.findAllinMonth(initialLocalDate, finalLocalDate);
+    }
 }

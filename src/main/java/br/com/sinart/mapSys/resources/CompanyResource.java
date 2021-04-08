@@ -3,6 +3,7 @@ package br.com.sinart.mapSys.resources;
 
 import br.com.sinart.mapSys.dto.CompanyDTO;
 import br.com.sinart.mapSys.entities.Company;
+import br.com.sinart.mapSys.entities.Destiny;
 import br.com.sinart.mapSys.services.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -64,4 +65,9 @@ public class CompanyResource {
         return ResponseEntity.ok().body(pageDTO);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/search")
+    public  ResponseEntity<List<Company>> findByName(@RequestParam(value="term") String name){
+        List<Company> list = service.findByName(name);
+        return ResponseEntity.ok().body(list);
+    }
 }

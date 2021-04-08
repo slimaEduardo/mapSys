@@ -15,7 +15,9 @@
 	<name>mapSys</name>
 	<description>Projeto do sistema de mapas</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>

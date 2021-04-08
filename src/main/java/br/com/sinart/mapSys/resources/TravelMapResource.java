@@ -66,18 +66,20 @@ public class TravelMapResource {
     }
 
    @RequestMapping(method = RequestMethod.GET)
-   public ResponseEntity<Page<?>> findInMonth(
-          @RequestParam(value="initialLocalDate",  defaultValue = "") LocalDate initialLocalDate,
-          @RequestParam(value="finalLocalDate",  defaultValue = "") LocalDate finalLocalDate,
-           @RequestParam(value="page", defaultValue = "0") Integer page,
-           @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
-          @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
-          @RequestParam(value="direction", defaultValue = "DESC")String direction) {
-    initialLocalDate = YearMonth.now().atDay(1);
-    finalLocalDate = LocalDate.now();
-    Page<TravelMap> pageP = service.search(initialLocalDate,finalLocalDate, page,linesPerPage, orderBy, direction);
-    Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
-    return ResponseEntity.ok().body(pageDTO);
+   public ResponseEntity<List<?>> findInMonth()
+//          @RequestParam(value="initialLocalDate",  defaultValue = "") LocalDate initialLocalDate,
+//          @RequestParam(value="finalLocalDate",  defaultValue = "") LocalDate finalLocalDate,
+//           @RequestParam(value="page", defaultValue = "0") Integer page,
+//           @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
+//          @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
+//          @RequestParam(value="direction", defaultValue = "DESC")String direction)
+        {
+       LocalDate initialLocalDate = YearMonth.now().atDay(1);
+       LocalDate finalLocalDate = LocalDate.now();
+    List<TravelMap> list = service.findAllInMonth(initialLocalDate,finalLocalDate);
+    List<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect(Collectors.toList());
+    //Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
+    return ResponseEntity.ok().body(listDto);
   }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search")
@@ -98,7 +100,7 @@ public class TravelMapResource {
 
     @RequestMapping(method = RequestMethod.GET, value = "/search1")
     public ResponseEntity<Page<?>> findByDestiny(
-            @RequestParam(value="therm",  defaultValue = "") Integer destiny,
+            @RequestParam(value="term",  defaultValue = "") Integer destiny,
             @RequestParam(value="page", defaultValue = "0") Integer page,
             @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
             @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
@@ -110,7 +112,7 @@ public class TravelMapResource {
 
     @RequestMapping(method = RequestMethod.GET, value = "/search2")
     public ResponseEntity<Page<?>> findByCompany(
-            @RequestParam(value="therm",  defaultValue = "") Integer company,
+            @RequestParam(value="term",  defaultValue = "") Integer company,
             @RequestParam(value="page", defaultValue = "0") Integer page,
             @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
             @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
@@ -122,7 +124,7 @@ public class TravelMapResource {
 
     @RequestMapping(method = RequestMethod.GET, value = "/search3")
     public ResponseEntity<Page<?>> findByCategory(
-            @RequestParam(value="therm",  defaultValue = "") Integer category,
+            @RequestParam(value="term",  defaultValue = "") Integer category,
             @RequestParam(value="page", defaultValue = "0") Integer page,
             @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
             @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
