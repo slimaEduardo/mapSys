@@ -35,10 +35,10 @@ public class TravelMapResource {
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<TravelMapDTO> findById(@PathVariable Integer id) {
+    public ResponseEntity<TravelMap> findById(@PathVariable Integer id) {
         TravelMap obj = service.findById(id);
-        TravelMapDTO objDto = new TravelMapDTO(obj);
-        return ResponseEntity.ok().body(objDto);
+        //TravelMapDTO objDto = new TravelMapDTO(obj);
+        return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
@@ -77,9 +77,9 @@ public class TravelMapResource {
        LocalDate initialLocalDate = YearMonth.now().atDay(1);
        LocalDate finalLocalDate = LocalDate.now();
     List<TravelMap> list = service.findAllInMonth(initialLocalDate,finalLocalDate);
-    List<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect(Collectors.toList());
+    //List<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect(Collectors.toList());
     //Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
-    return ResponseEntity.ok().body(listDto);
+    return ResponseEntity.ok().body(list);
   }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search")

@@ -20,10 +20,10 @@ public class TravelMap implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_viagem")
     private Integer id;
-    @ManyToOne(fetch=FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name="id_empresa_mapas",  referencedColumnName ="id_empresa")
     private Company company;
-    @OneToOne(fetch =FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "id_categoria_mapas", referencedColumnName = "id_categoria")
     private BusCategory busCategory;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -32,7 +32,7 @@ public class TravelMap implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     @Column(name="hora_viagem")
     private LocalTime boardingTime;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "id_destino_mapas")
     private Destiny destiny;
     @Column(name="qnt_passageiros")
