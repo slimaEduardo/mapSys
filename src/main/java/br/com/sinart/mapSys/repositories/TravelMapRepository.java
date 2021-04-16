@@ -20,13 +20,13 @@ import java.util.List;
 public interface TravelMapRepository extends JpaRepository<TravelMap, Integer> {
 
     @Query("SELECT obj FROM TravelMap obj WHERE obj.boardingDate >= ?1 AND obj.boardingDate <= ?2")
-    Page<TravelMap> findAllByBoardingDate(LocalDate intialBoardingDate, LocalDate finalBoardingDate, Pageable pageable);
-    @Transactional(readOnly = true)
-    Page<TravelMap> findAllByDestinyId(Integer destiny, Pageable pageable);
-    @Transactional(readOnly = true)
-    Page<TravelMap> findAllByCompanyId(Integer company, Pageable pageable);
-    @Transactional(readOnly = true)
-    Page<TravelMap> findAllByBusCategoryId(Integer category, Pageable pageable);
+    List<TravelMap> findAllByBoardingDate(LocalDate intialBoardingDate, LocalDate finalBoardingDate);
+    @Query("SELECT obj FROM TravelMap obj WHERE obj.boardingDate >= ?1 AND obj.boardingDate <= ?2 AND obj.destiny.id = ?3")
+    List<TravelMap> findAllByDestinyId(LocalDate initialLocaldate,LocalDate finalLocalDate,Integer destiny);
+    @Query("SELECT obj FROM TravelMap obj WHERE obj.boardingDate >= ?1 AND obj.boardingDate <= ?2 AND obj.company.id = ?3")
+    List<TravelMap> findAllByCompanyId(LocalDate initialLocaldate,LocalDate finalLocalDate,Integer company);
+    @Query("SELECT obj FROM TravelMap obj WHERE obj.boardingDate >= ?1 AND obj.boardingDate <= ?2 AND obj.busCategory.id = ?3")
+    List<TravelMap> findAllByBusCategoryId(LocalDate initialLocaldate,LocalDate finalLocalDate,Integer category);
     @Query("SELECT obj FROM TravelMap obj WHERE obj.boardingDate >= ?1 AND obj.boardingDate <= ?2")
     List<TravelMap> findAllinMonth(LocalDate initialLocalDate, LocalDate finalLocalDate);
 }

@@ -64,24 +64,23 @@ public class TravelMapService {
 
     }
 
-    public Page<TravelMap> search (LocalDate initialLocaldate,LocalDate finalLocalDate, Integer page, Integer linesPerPage,String orderBy,String direction){
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAllByBoardingDate(initialLocaldate,finalLocalDate,pageRequest);
+    public List<TravelMap> search (LocalDate initialLocaldate,LocalDate finalLocalDate){
+        //PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        return repository.findAllByBoardingDate(initialLocaldate,finalLocalDate);
     }
 
-    public Page<TravelMap> searchByDestiny(Integer destiny,Integer page,Integer linesPerPage, String orderBy, String direction){
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAllByDestinyId(destiny,pageRequest);
+    public List<TravelMap> searchByDestiny(LocalDate initialLocaldate,LocalDate finalLocalDate,Integer destiny){
+        return repository.findAllByDestinyId(initialLocaldate,finalLocalDate,destiny);
     }
 
-    public Page<TravelMap> searchByCompany(Integer company,Integer page,Integer linesPerPage, String orderBy, String direction){
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAllByCompanyId(company,pageRequest);
+    public List<TravelMap> searchByCompany(LocalDate initialLocaldate,LocalDate finalLocalDate,Integer company){
+       // PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        return repository.findAllByCompanyId(initialLocaldate,finalLocalDate,company);
     }
 
-    public Page<TravelMap> searchByCategory(Integer category,Integer page,Integer linesPerPage, String orderBy, String direction){
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAllByBusCategoryId(category,pageRequest);
+    public List<TravelMap> searchByCategory(LocalDate initialLocaldate,LocalDate finalLocalDate,Integer category){
+       // PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        return repository.findAllByBusCategoryId(initialLocaldate,finalLocalDate,category);
     }
 
     public TravelMap fromDTO(TravelMapNewDTO objDto) {
