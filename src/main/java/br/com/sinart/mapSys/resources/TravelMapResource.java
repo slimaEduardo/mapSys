@@ -1,11 +1,13 @@
 package br.com.sinart.mapSys.resources;
 
 
+import br.com.sinart.mapSys.dto.MapReportDTO;
 import br.com.sinart.mapSys.dto.TravelMapDTO;
 import br.com.sinart.mapSys.dto.TravelMapNewDTO;
 import br.com.sinart.mapSys.entities.TravelMap;
 import br.com.sinart.mapSys.resources.utils.URL;
 import br.com.sinart.mapSys.services.TravelMapService;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.Month;
@@ -20,7 +23,9 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @RestController
@@ -85,17 +90,16 @@ public class TravelMapResource {
     @RequestMapping(method = RequestMethod.GET, value = "/search")
     public ResponseEntity<List<?>> findByInterval(
             @RequestParam(value="start",  defaultValue = "") String start,
-            @RequestParam(value="end",  defaultValue = "") String end
-//            @RequestParam(value="page", defaultValue = "0") Integer page,
-//            @RequestParam(value="linesPerPage", defaultValue = "10") Integer linesPerPage,
-//            @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
-//            @RequestParam(value="direction", defaultValue = "ASC")String direction
-            ) {
+            @RequestParam(value="end",  defaultValue = "") String end) {
 
        LocalDate initialLocalDate = LocalDate.parse(start,formatadorBarra);
         LocalDate finalLocalDate = LocalDate.parse(end,formatadorBarra);
         List<TravelMap> list = service.search(initialLocalDate,finalLocalDate);
-        //Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
+        List<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect(Collectors.toList());
+        Map<String, List<TravelMapDTO>> collect = listDto.stream().collect(
+                Collectors.groupingBy(TravelMapDTO::getCompanyName)
+        );
+        System.out.println("Lista de Empresas:" + collect + "Total de empresas: " + collect.size());
         return ResponseEntity.ok().body(list);
     }
 
@@ -136,4 +140,21 @@ public class TravelMapResource {
         return ResponseEntity.ok().body(list);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/report")
+    public void reportInterval(
+            @RequestParam(value="start",  defaultValue = "") String start,
+            @RequestParam(value="end",  defaultValue = "") String end) throws JRException, FileNotFoundException {
+        MapReportDTO report;
+        LocalDate initialLocalDate = LocalDate.parse(start,formatadorBarra);
+        LocalDate finalLocalDate = LocalDate.parse(end,formatadorBarra);
+        List<TravelMap> list = service.search(initialLocalDate,finalLocalDate);
+        List<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect(Collectors.toList());
+        /*Map<String,Map<String,List<TravelMapDTO>>> collect = listDto.stream()
+                .collect(Collectors.groupingBy(TravelMapDTO::getCompanyName,
+                        Collectors.groupingBy(TravelMapDTO::getDestinyName)));*/
+
+        service.exportReport(listDto);
+
+      /*  return ResponseEntity.ok().body(collect);*/
+    }
 }

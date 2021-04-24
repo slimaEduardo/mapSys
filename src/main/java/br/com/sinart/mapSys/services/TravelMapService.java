@@ -6,15 +6,22 @@ import br.com.sinart.mapSys.entities.BusCategory;
 import br.com.sinart.mapSys.entities.TravelMap;
 import br.com.sinart.mapSys.repositories.TravelMapRepository;
 import br.com.sinart.mapSys.services.exceptions.ObjectNotFoundException;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -95,5 +102,17 @@ public class TravelMapService {
 
     public List<TravelMap> findAllInMonth(LocalDate initialLocalDate, LocalDate finalLocalDate) {
         return repository.findAllinMonth(initialLocalDate, finalLocalDate);
+    }
+
+    public String exportReport(List<TravelMapDTO> list) throws FileNotFoundException, JRException {
+        File file = ResourceUtils.getFile("classpath:report.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("createdBy", "Java Techie");
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,dataSource);
+        JasperExportManager.exportReportToPdfFile(jasperPrint, "relatorio.pdf");
+
+        return "Sucesso";
     }
 }
