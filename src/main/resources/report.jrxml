@@ -56,7 +56,7 @@
             </staticText>
             <staticText>
                 <reportElement style="SubTitle" x="100" y="46" width="174" height="22" uuid="0b5308cc-82cf-49a0-8011-6f875d4c5e32"/>
-                <text><![CDATA[Por passageiros]]></text>
+                <text><![CDATA[Versão de testes. Poderá ser alterado na versão final]]></text>
             </staticText>
         </band>
     </title>

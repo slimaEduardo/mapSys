@@ -153,7 +153,7 @@ public class TravelMapResource {
                 .collect(Collectors.groupingBy(TravelMapDTO::getCompanyName,
                         Collectors.groupingBy(TravelMapDTO::getDestinyName)));*/
 
-        service.exportReport(listDto);
+       service.exportReport(listDto);
 
       /*  return ResponseEntity.ok().body(collect);*/
     }
