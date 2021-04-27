@@ -6,15 +6,23 @@ import br.com.sinart.mapSys.entities.BusCategory;
 import br.com.sinart.mapSys.entities.TravelMap;
 import br.com.sinart.mapSys.repositories.TravelMapRepository;
 import br.com.sinart.mapSys.services.exceptions.ObjectNotFoundException;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -64,24 +72,23 @@ public class TravelMapService {
 
     }
 
-    public Page<TravelMap> search (LocalDate initialLocaldate,LocalDate finalLocalDate, Integer page, Integer linesPerPage,String orderBy,String direction){
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAllByBoardingDate(initialLocaldate,finalLocalDate,pageRequest);
+    public List<TravelMap> search (LocalDate initialLocaldate,LocalDate finalLocalDate){
+        //PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        return repository.findAllByBoardingDate(initialLocaldate,finalLocalDate);
     }
 
-    public Page<TravelMap> searchByDestiny(Integer destiny,Integer page,Integer linesPerPage, String orderBy, String direction){
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAllByDestinyId(destiny,pageRequest);
+    public List<TravelMap> searchByDestiny(LocalDate initialLocaldate,LocalDate finalLocalDate,Integer destiny){
+        return repository.findAllByDestinyId(initialLocaldate,finalLocalDate,destiny);
     }
 
-    public Page<TravelMap> searchByCompany(Integer company,Integer page,Integer linesPerPage, String orderBy, String direction){
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAllByCompanyId(company,pageRequest);
+    public List<TravelMap> searchByCompany(LocalDate initialLocaldate,LocalDate finalLocalDate,Integer company){
+       // PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        return repository.findAllByCompanyId(initialLocaldate,finalLocalDate,company);
     }
 
-    public Page<TravelMap> searchByCategory(Integer category,Integer page,Integer linesPerPage, String orderBy, String direction){
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        return repository.findAllByBusCategoryId(category,pageRequest);
+    public List<TravelMap> searchByCategory(LocalDate initialLocaldate,LocalDate finalLocalDate,Integer category){
+       // PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        return repository.findAllByBusCategoryId(initialLocaldate,finalLocalDate,category);
     }
 
     public TravelMap fromDTO(TravelMapNewDTO objDto) {
@@ -96,5 +103,16 @@ public class TravelMapService {
 
     public List<TravelMap> findAllInMonth(LocalDate initialLocalDate, LocalDate finalLocalDate) {
         return repository.findAllinMonth(initialLocalDate, finalLocalDate);
+    }
+
+    public void exportReport(List<TravelMapDTO> list) throws FileNotFoundException, JRException {
+        File file = ResourceUtils.getFile("classpath:report.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("createdBy", "Eduardo Lima");
+       JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,dataSource);
+        JasperExportManager.exportReportToPdfFile(jasperPrint, "relatorio.pdf");
+
     }
 }
