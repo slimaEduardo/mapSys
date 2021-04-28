@@ -23,7 +23,7 @@ public class UserResource {
     @Autowired
     private UserService service;
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List> findAll(){
         List<User> list = service.findAll();
@@ -37,7 +37,7 @@ public class UserResource {
         return ResponseEntity.ok().body(obj);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<User> insert(@Valid @RequestBody UserNewDTO objDto) {
         User obj = service.fromDTO(objDto);
@@ -53,7 +53,7 @@ public class UserResource {
         return ResponseEntity.ok().body(objUpdated);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);

@@ -31,9 +31,9 @@ public class UserService {
 
     public User findById(Integer id) {
         UserSS user = UserAuthService.authenticated();
-        if(user==null || !user.hasRole(UserProfile.ADMIN) && !id.equals(user.getId())){
-            throw new AuthorizationException("Acesso negado.");
-        }
+       // if(user==null || !user.hasRole(UserProfile.ADMIN) && !id.equals(user.getId())){
+       //     throw new AuthorizationException("Acesso negado.");
+      //  }
         Optional<User> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Usuário com id " + id + " não encontrado."));
     }
@@ -61,9 +61,9 @@ public class UserService {
     private void updateData(User entity, UserNewDTO obj) {
         entity.setName(obj.getName());
         entity.setPassword(pe.encode(obj.getPassword()));
-       if(entity.getUserProfile() == UserProfile.ADMIN) {
+       //if(entity.getUserProfile() == UserProfile.ADMIN) {
            entity.setUserProfile(UserProfile.toEnum(obj.getProfileId()));
-       }
+     //  }
 
     }
 
