@@ -9,14 +9,22 @@ import br.com.sinart.mapSys.resources.utils.URL;
 import br.com.sinart.mapSys.services.TravelMapService;
 import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
@@ -141,7 +149,7 @@ public class TravelMapResource {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/report")
-    public void reportInterval(
+    public ResponseEntity<?> reportInterval(
             @RequestParam(value="start",  defaultValue = "") String start,
             @RequestParam(value="end",  defaultValue = "") String end) throws JRException, FileNotFoundException {
         MapReportDTO report;
@@ -152,9 +160,21 @@ public class TravelMapResource {
         /*Map<String,Map<String,List<TravelMapDTO>>> collect = listDto.stream()
                 .collect(Collectors.groupingBy(TravelMapDTO::getCompanyName,
                         Collectors.groupingBy(TravelMapDTO::getDestinyName)));*/
-
-       service.exportReport(listDto);
-
-      /*  return ResponseEntity.ok().body(collect);*/
+        File file = service.exportReport(listDto);
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=relatorio.pdf");
+        try {
+            Path path = Paths.get(file.getAbsolutePath());
+            ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+            return ResponseEntity
+                    .ok()
+                    .headers(header)
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentLength(file.length())
+                    .body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
     }
 }

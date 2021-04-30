@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.HashMap;
@@ -105,14 +107,15 @@ public class TravelMapService {
         return repository.findAllinMonth(initialLocalDate, finalLocalDate);
     }
 
-    public void exportReport(List<TravelMapDTO> list) throws FileNotFoundException, JRException {
+    public File exportReport(List<TravelMapDTO> list) throws FileNotFoundException, JRException {
         File file = ResourceUtils.getFile("classpath:report.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("createdBy", "Eduardo Lima");
        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,dataSource);
-        JasperExportManager.exportReportToPdfFile(jasperPrint, "relatorio.pdf");
-
+       JasperExportManager.exportReportToPdfFile(jasperPrint, "relatorio.pdf");
+        File file2 = new File("relatorio.pdf");
+        return file2.getAbsoluteFile();
     }
 }
