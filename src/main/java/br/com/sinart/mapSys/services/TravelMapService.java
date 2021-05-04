@@ -10,16 +10,22 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
+import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URI;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.HashMap;
@@ -42,6 +48,9 @@ public class TravelMapService {
     public List<TravelMap> findAll(){
         return repository.findAll();
     }
+
+    @Autowired
+    public DataSource dataSource;
 
     public TravelMap findById(Integer id) {
         Optional<TravelMap> obj = repository.findById(id);
@@ -107,13 +116,17 @@ public class TravelMapService {
         return repository.findAllinMonth(initialLocalDate, finalLocalDate);
     }
 
-    public File exportReport(List<TravelMapDTO> list) throws FileNotFoundException, JRException {
-        File file = ResourceUtils.getFile("classpath:report.jrxml");
+    public File exportReport(LocalDate initialLocalDate, LocalDate finalLocalDate) throws FileNotFoundException, JRException, SQLException {
+        File file = ResourceUtils.getFile("classpath:Leaf_Green.jrxml");
+
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("createdBy", "Eduardo Lima");
-       JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,dataSource);
+        /*JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);*/
+        Date start = Date.valueOf(initialLocalDate);
+        Date end = Date.valueOf(finalLocalDate);
+        HashMap parameters = new HashMap<>();
+        parameters.put("DATA_INICIAL", start);
+        parameters.put("DATA_FINAL", end);
+       JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,dataSource.getConnection());
        JasperExportManager.exportReportToPdfFile(jasperPrint, "relatorio.pdf");
         File file2 = new File("relatorio.pdf");
         return file2.getAbsoluteFile();

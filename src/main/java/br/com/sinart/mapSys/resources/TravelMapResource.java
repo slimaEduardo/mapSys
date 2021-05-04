@@ -25,6 +25,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
@@ -104,10 +105,7 @@ public class TravelMapResource {
         LocalDate finalLocalDate = LocalDate.parse(end,formatadorBarra);
         List<TravelMap> list = service.search(initialLocalDate,finalLocalDate);
         List<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect(Collectors.toList());
-        Map<String, List<TravelMapDTO>> collect = listDto.stream().collect(
-                Collectors.groupingBy(TravelMapDTO::getCompanyName)
-        );
-        System.out.println("Lista de Empresas:" + collect + "Total de empresas: " + collect.size());
+
         return ResponseEntity.ok().body(list);
     }
 
@@ -151,16 +149,16 @@ public class TravelMapResource {
     @RequestMapping(method = RequestMethod.GET, value = "/report")
     public ResponseEntity<?> reportInterval(
             @RequestParam(value="start",  defaultValue = "") String start,
-            @RequestParam(value="end",  defaultValue = "") String end) throws JRException, FileNotFoundException {
+            @RequestParam(value="end",  defaultValue = "") String end) throws JRException, FileNotFoundException, SQLException {
         MapReportDTO report;
         LocalDate initialLocalDate = LocalDate.parse(start,formatadorBarra);
         LocalDate finalLocalDate = LocalDate.parse(end,formatadorBarra);
-        List<TravelMap> list = service.search(initialLocalDate,finalLocalDate);
-        List<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect(Collectors.toList());
+        //List<TravelMap> list = service.search(initialLocalDate,finalLocalDate);
+        //List<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect(Collectors.toList());
         /*Map<String,Map<String,List<TravelMapDTO>>> collect = listDto.stream()
                 .collect(Collectors.groupingBy(TravelMapDTO::getCompanyName,
                         Collectors.groupingBy(TravelMapDTO::getDestinyName)));*/
-        File file = service.exportReport(listDto);
+        File file = service.exportReport(initialLocalDate,finalLocalDate);
         HttpHeaders header = new HttpHeaders();
         header.add(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=relatorio.pdf");
         try {
