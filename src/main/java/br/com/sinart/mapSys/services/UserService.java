@@ -47,7 +47,7 @@ public class UserService {
         try {
             repository.deleteById(id);
         }catch (DataIntegrityViolationException e){
-            throw new DataIntegrityException("Não é possível excluir um usuário com mapas cadstrados.");
+            throw new DataIntegrityException("Não é possível excluir um usuário com mapas cadastrados.");
         };
     }
 

@@ -84,7 +84,6 @@ public class TravelMapService {
     }
 
     public List<TravelMap> search (LocalDate initialLocaldate,LocalDate finalLocalDate){
-        //PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return repository.findAllByBoardingDate(initialLocaldate,finalLocalDate);
     }
 
@@ -93,12 +92,10 @@ public class TravelMapService {
     }
 
     public List<TravelMap> searchByCompany(LocalDate initialLocaldate,LocalDate finalLocalDate,Integer company){
-       // PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return repository.findAllByCompanyId(initialLocaldate,finalLocalDate,company);
     }
 
     public List<TravelMap> searchByCategory(LocalDate initialLocaldate,LocalDate finalLocalDate,Integer category){
-       // PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return repository.findAllByBusCategoryId(initialLocaldate,finalLocalDate,category);
     }
 
@@ -113,14 +110,12 @@ public class TravelMapService {
     }
 
     public List<TravelMap> findAllInMonth(LocalDate initialLocalDate, LocalDate finalLocalDate) {
-        return repository.findAllinMonth(initialLocalDate, finalLocalDate);
+        return repository.findAllByBoardingDate(initialLocalDate, finalLocalDate);
     }
 
     public File exportReport(LocalDate initialLocalDate, LocalDate finalLocalDate) throws FileNotFoundException, JRException, SQLException {
         File file = ResourceUtils.getFile("classpath:Leaf_Green.jrxml");
-
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-        /*JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);*/
         Date start = Date.valueOf(initialLocalDate);
         Date end = Date.valueOf(finalLocalDate);
         HashMap parameters = new HashMap<>();

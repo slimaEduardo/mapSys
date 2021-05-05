@@ -37,19 +37,15 @@ public class BusCategoryService {
         }catch(DataIntegrityViolationException e){
            throw new DataIntegrityException("Não é possível excluir uma categoria com destinos cadastrados.");
         }
-
     }
 
     public BusCategory update(Integer id, BusCategory obj) {
-
             BusCategory entity = repository.getOne(id);
             updateData(entity,obj);
             return repository.save(entity);
-
     }
 
     private void updateData(BusCategory entity, BusCategory obj) {
         entity.setName(obj.getName());
-        
     }
 }

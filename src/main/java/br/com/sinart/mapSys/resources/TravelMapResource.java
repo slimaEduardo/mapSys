@@ -51,7 +51,6 @@ public class TravelMapResource {
     @GetMapping(value = "/{id}")
     public ResponseEntity<TravelMap> findById(@PathVariable Integer id) {
         TravelMap obj = service.findById(id);
-        //TravelMapDTO objDto = new TravelMapDTO(obj);
         return ResponseEntity.ok().body(obj);
     }
 
@@ -81,31 +80,20 @@ public class TravelMapResource {
 
    @RequestMapping(method = RequestMethod.GET)
    public ResponseEntity<List<?>> findInMonth()
-          //@RequestParam(value="initialLocalDate",  defaultValue = "") LocalDate initialLocalDate,
-         // @RequestParam(value="finalLocalDate",  defaultValue = "") LocalDate finalLocalDate,
-//           @RequestParam(value="page", defaultValue = "0") Integer page,
-//           @RequestParam(value="linesPerPage", defaultValue = "50") Integer linesPerPage,
-//          @RequestParam(value="orderBy", defaultValue = "boardingDate")String orderBy,
-//          @RequestParam(value="direction", defaultValue = "DESC")String direction)
         {
        LocalDate initialLocalDate = YearMonth.now().atDay(1);
        LocalDate finalLocalDate = LocalDate.now();
-    List<TravelMap> pageMap = service.findAllInMonth(initialLocalDate,finalLocalDate);
-    //List<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect(Collectors.toList());
-    //Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
-    return ResponseEntity.ok().body(pageMap);
+    List<TravelMap> list = service.search(initialLocalDate,finalLocalDate);
+    return ResponseEntity.ok().body(list);
   }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search")
     public ResponseEntity<List<?>> findByInterval(
             @RequestParam(value="start",  defaultValue = "") String start,
             @RequestParam(value="end",  defaultValue = "") String end) {
-
        LocalDate initialLocalDate = LocalDate.parse(start,formatadorBarra);
         LocalDate finalLocalDate = LocalDate.parse(end,formatadorBarra);
         List<TravelMap> list = service.search(initialLocalDate,finalLocalDate);
-        List<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect(Collectors.toList());
-
         return ResponseEntity.ok().body(list);
     }
 
@@ -117,7 +105,6 @@ public class TravelMapResource {
         LocalDate initialLocalDate = LocalDate.parse(start,formatadorBarra);
         LocalDate finalLocalDate = LocalDate.parse(end,formatadorBarra);
         List<TravelMap> list = service.searchByDestiny(initialLocalDate,finalLocalDate,destiny);
-        //Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
         return ResponseEntity.ok().body(list);
     }
 
@@ -130,7 +117,6 @@ public class TravelMapResource {
         LocalDate initialLocalDate = LocalDate.parse(start,formatadorBarra);
         LocalDate finalLocalDate = LocalDate.parse(end,formatadorBarra);
         List<TravelMap> list = service.searchByCompany(initialLocalDate,finalLocalDate,company);
-        //Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
         return ResponseEntity.ok().body(list);
     }
 
@@ -142,7 +128,6 @@ public class TravelMapResource {
         LocalDate initialLocalDate = LocalDate.parse(start,formatadorBarra);
         LocalDate finalLocalDate = LocalDate.parse(end,formatadorBarra);
         List<TravelMap> list = service.searchByCategory(initialLocalDate,finalLocalDate,category);
-        //Page<TravelMapDTO> pageDTO = pageP.map(obj -> new TravelMapDTO(obj));
         return ResponseEntity.ok().body(list);
     }
 
@@ -153,11 +138,6 @@ public class TravelMapResource {
         MapReportDTO report;
         LocalDate initialLocalDate = LocalDate.parse(start,formatadorBarra);
         LocalDate finalLocalDate = LocalDate.parse(end,formatadorBarra);
-        //List<TravelMap> list = service.search(initialLocalDate,finalLocalDate);
-        //List<TravelMapDTO> listDto = list.stream().map(obj -> new TravelMapDTO(obj)).collect(Collectors.toList());
-        /*Map<String,Map<String,List<TravelMapDTO>>> collect = listDto.stream()
-                .collect(Collectors.groupingBy(TravelMapDTO::getCompanyName,
-                        Collectors.groupingBy(TravelMapDTO::getDestinyName)));*/
         File file = service.exportReport(initialLocalDate,finalLocalDate);
         HttpHeaders header = new HttpHeaders();
         header.add(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=relatorio.pdf");

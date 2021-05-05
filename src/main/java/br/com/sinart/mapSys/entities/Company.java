@@ -21,10 +21,6 @@ public class Company implements Serializable {
     @Column(name="nome_empresa")
     private String name;
 
-   // @OneToMany(fetch = FetchType.EAGER, mappedBy="company")
-   // public Set<TravelMap> maps = new HashSet<>();
-
-
     public Company() {
     }
 

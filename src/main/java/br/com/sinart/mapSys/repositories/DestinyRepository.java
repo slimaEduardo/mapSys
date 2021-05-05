@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public interface DestinyRepository extends JpaRepository<Destiny, Integer> {
 
-    //@Transactional(readOnly = true)
+
     @Query("SELECT obj FROM Destiny obj WHERE obj.name LIKE %?1%")
     List<Destiny> findAllByName(String name);
 }

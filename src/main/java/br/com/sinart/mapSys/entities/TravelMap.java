@@ -38,14 +38,6 @@ public class TravelMap implements Serializable {
     @Column(name="qnt_passageiros")
     private Integer passQtt;
 
-
-    //@Transient
-    //private Integer companyId;
-   // @Transient
-    //private Integer busId;
-    //@Transient
-    //private Integer destinyId;
-
     public TravelMap() {
     }
 
@@ -56,13 +48,7 @@ public class TravelMap implements Serializable {
         this.company = company;
         this.busCategory = busCategory;
         this.destiny = destiny;
-       // this.companyId = companyId;
-        //this.busId = busId;
-        //this.destinyId = destinyId;
-
     }
-
-
 
     public Company getCompany() {
       return company;
@@ -104,29 +90,6 @@ public class TravelMap implements Serializable {
         this.passQtt = passQtt;
     }
 
-    //public Integer getCompanyId() {
-   //     return companyId;
-  //  }
-
-   // public void setCompanyId(Integer companyId) {
-   //     this.companyId = companyId;
-  //  }
-
-   // public Integer getBusId() {
-    //    return busId;
-   // }
-
-   // public void setBusId(Integer busId) {
-   //     this.busId = busId;
-   // }
-
-   // public Integer getDestinyId() {
-   //     return destinyId;
-  //  }
-
-  //  public void setDestinyId(Integer destinyId) {
-   //     this.destinyId = destinyId;
-  //  }
 
     public Integer getId() {
         return id;
