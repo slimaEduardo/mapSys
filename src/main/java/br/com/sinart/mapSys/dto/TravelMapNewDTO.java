@@ -1,13 +1,21 @@
 package br.com.sinart.mapSys.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class TravelMapNewDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @NotEmpty(message = "Campo Obrigatório.")
     private Integer companyId;
@@ -23,55 +31,4 @@ public class TravelMapNewDTO implements Serializable {
     private LocalTime boardingTime;
     @NotEmpty(message = "Campo Obrigatório.")
     private Integer passQtt;
-
-    public TravelMapNewDTO() {
-    }
-
-    public Integer getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
-
-    public Integer getBusId() {
-        return busId;
-    }
-
-    public void setBusId(Integer busId) {
-        this.busId = busId;
-    }
-
-    public Integer getDestinyId() {
-        return destinyId;
-    }
-
-    public void setDestinyId(Integer destinyId) {
-        this.destinyId = destinyId;
-    }
-
-    public LocalDate getBoardingDate() {
-        return boardingDate;
-    }
-
-    public void setBoardingDate(LocalDate boardingDate) {
-        this.boardingDate = boardingDate;
-    }
-
-    public LocalTime getBoardingTime() {
-        return boardingTime;
-    }
-
-    public void setBoardingTime(LocalTime boardingTime) {
-        this.boardingTime = boardingTime;
-    }
-
-    public Integer getPassQtt() {
-        return passQtt;
-    }
-
-    public void setPassQtt(Integer passQtt) {
-        this.passQtt = passQtt;
-    }
 }

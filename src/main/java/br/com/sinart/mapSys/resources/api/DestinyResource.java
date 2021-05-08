@@ -1,4 +1,4 @@
-package br.com.sinart.mapSys.resources;
+package br.com.sinart.mapSys.resources.api;
 
 
 import br.com.sinart.mapSys.dto.DestinyDTO;
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value="/destinies")
 public class DestinyResource {
@@ -24,12 +24,9 @@ public class DestinyResource {
     private DestinyService service;
 
     @GetMapping
-    public ResponseEntity<Page<?>> findAll(@RequestParam(value="page", defaultValue = "0") Integer page,
-                                           @RequestParam(value="linesPerPage", defaultValue = "25") Integer linesPerPage,
-                                           @RequestParam(value="orderBy", defaultValue = "name")String orderBy,
-                                           @RequestParam(value="direction", defaultValue = "ASC")String direction){
-        Page<Destiny> destinyPage = service.findAll(page,linesPerPage, orderBy, direction);
-        return ResponseEntity.ok().body(destinyPage);
+    public ResponseEntity<List<?>> findAll(){
+        List<Destiny> list = service.findAll();
+        return ResponseEntity.ok().body(list);
     }
 
     
