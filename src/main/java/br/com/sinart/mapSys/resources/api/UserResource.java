@@ -17,6 +17,7 @@ import java.util.List;
 
 import static br.com.sinart.mapSys.mapper.UserMapper.getUserMapper;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @Api(value = "User Resource")
 @RestController
 @RequestMapping(value = "/users")

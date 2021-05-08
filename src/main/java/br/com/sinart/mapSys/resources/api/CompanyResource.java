@@ -13,7 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/companies")
 public class CompanyResource {
@@ -53,13 +53,9 @@ public class CompanyResource {
 
 
     @GetMapping
-    public ResponseEntity<Page<?>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                           @RequestParam(value = "linesPerPage", defaultValue = "10") Integer linesPerPage,
-                                           @RequestParam(value = "orderBy", defaultValue = "id") String orderBy,
-                                           @RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-        Page<Company> _page = service.findAll(page, linesPerPage, orderBy, direction);
-        Page<CompanyDTO> pageDTO = _page.map(obj -> new CompanyDTO(obj));
-        return ResponseEntity.ok().body(pageDTO);
+    public ResponseEntity<List<?>> findAll() {
+        List<Company> list = service.findAll();
+        return ResponseEntity.ok().body(list);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/search")

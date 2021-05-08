@@ -12,7 +12,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Entity
 @Table(name = "categoria")
-public class BusCategory implements Serializable {
+public class  BusCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

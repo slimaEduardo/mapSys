@@ -48,9 +48,8 @@ public class CompanyService {
 
     }
 
-    public Page<Company> findAll(Integer page, Integer linesPerPage,String orderBy,String direction){
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        return repository.findAll(pageRequest);
+    public List<Company> findAll(){
+        return repository.findAll();
     }
 
     private void updateData(Company entity, Company obj) {

@@ -23,9 +23,8 @@ public class DestinyService {
     @Autowired
     private LineCategoryService lineCategoryService;
 
-    public Page<Destiny> findAll(Integer page, Integer linesPerPage, String orderBy, String direction) {
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        return repository.findAll(pageRequest);
+    public List<Destiny> findAll() {
+        return repository.findAll();
     }
 
     public Destiny findById(Integer id) {
