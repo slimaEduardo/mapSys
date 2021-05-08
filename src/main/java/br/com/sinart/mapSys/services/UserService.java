@@ -1,82 +1,79 @@
 package br.com.sinart.mapSys.services;
 
-import br.com.sinart.mapSys.dto.UserNewDTO;
+import br.com.sinart.mapSys.dto.request.UserCreateRequest;
+import br.com.sinart.mapSys.dto.request.UserUpdateRequest;
 import br.com.sinart.mapSys.entities.User;
-import br.com.sinart.mapSys.entities.enums.UserProfile;
+import br.com.sinart.mapSys.entities.enums.RoleName;
+import br.com.sinart.mapSys.mapper.UserMapper;
 import br.com.sinart.mapSys.repositories.UserRepository;
-import br.com.sinart.mapSys.security.UserSS;
-import br.com.sinart.mapSys.services.exceptions.AuthorizationException;
 import br.com.sinart.mapSys.services.exceptions.DataIntegrityException;
-import br.com.sinart.mapSys.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
+
+import static br.com.sinart.mapSys.mapper.UserMapper.getUserMapper;
 
 @Service
 public class UserService {
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder pe;
+    private final UserMapper userMapper = getUserMapper();
 
-    public List<User> findAll(){
-        return repository.findAll();
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     public User findById(Integer id) {
-        UserSS user = UserAuthService.authenticated();
-       // if(user==null || !user.hasRole(UserProfile.ADMIN) && !id.equals(user.getId())){
-       //     throw new AuthorizationException("Acesso negado.");
-      //  }
-        Optional<User> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException("Usuário com id " + id + " não encontrado."));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
     }
 
-    public User insert(User obj) {
-
-         return repository.save(obj);
+    public User create(UserCreateRequest request) {
+        User user = new User();
+        user.setName(request.getName());
+        user.setUserName(request.getUserName());
+        user.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
+        user.setUserProfile(RoleName.valueOf(request.getRole().name()).getCode());
+        return userRepository.saveAndFlush(user);
     }
 
-    public void delete(Integer id){
+    public User update(Integer id, UserUpdateRequest request) {
+        User user = this.findById(id);
+        this.verifyPassword(request);
+        userMapper.updateUserRequestFromRequest(request, user);
+        this.verifyRole(request, user);
+        return userRepository.saveAndFlush(user);
+    }
+
+    public void delete(Integer id) {
         try {
-            repository.deleteById(id);
-        }catch (DataIntegrityViolationException e){
+            userRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException("Não é possível excluir um usuário com mapas cadastrados.");
-        };
+        }
+        ;
     }
 
-    public User update(Integer id, UserNewDTO obj) {
-            User entity = repository.getById(id);
-            updateData(entity,obj);
-            return repository.save(entity);
-
+    private void verifyRole(UserUpdateRequest request, User user) {
+        if (request.getRole() != null) {
+            if (request.getRole().equals(RoleName.ADMIN)) {
+                user.setUserProfile(0);
+            } else if (request.getRole().equals(RoleName.USER)) {
+                user.setUserProfile(1);
+            }
+        }
     }
 
-    private void updateData(User entity, UserNewDTO obj) {
-        entity.setName(obj.getName());
-        entity.setPassword(pe.encode(obj.getPassword()));
-       //if(entity.getUserProfile() == UserProfile.ADMIN) {
-           entity.setUserProfile(UserProfile.toEnum(obj.getProfileId()));
-     //  }
-
-    }
-
-    public User fromDTO(UserNewDTO objDto) {
-        User usr = new User(objDto.getName(),
-                            objDto.getUserName(),
-                            pe.encode(objDto.getPassword()),
-                            UserProfile.toEnum(objDto.getProfileId()));
-        return usr;
-    }
-
-    public User findByUserName(String userName) {
-        User obj = repository.findByUserName(userName);
-        return obj;
+    private void verifyPassword(UserUpdateRequest request) {
+        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+            request.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
+        }
     }
 }

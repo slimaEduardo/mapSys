@@ -23,7 +23,7 @@ public class DestinyService {
     @Autowired
     private LineCategoryService lineCategoryService;
 
-    public Page<Destiny> findAll(Integer page, Integer linesPerPage, String orderBy, String direction){
+    public Page<Destiny> findAll(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return repository.findAll(pageRequest);
     }
@@ -40,21 +40,21 @@ public class DestinyService {
 
     public Destiny insert(Destiny obj) {
 
-         return repository.save(obj);
+        return repository.save(obj);
     }
 
-    public void delete(Integer id){
+    public void delete(Integer id) {
         try {
             repository.deleteById(id);
-        }catch (DataIntegrityViolationException e){
-         throw new DataIntegrityException("Não é possível excluir um destino com mapas cadastrados.");
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityException("Não é possível excluir um destino com mapas cadastrados.");
         }
     }
 
     public Destiny update(Integer id, DestinyNewDTO obj) {
-            Destiny entity = repository.getOne(id);
-            updateData(entity,obj);
-            return repository.save(entity);
+        Destiny entity = repository.getOne(id);
+        updateData(entity, obj);
+        return repository.save(entity);
 
     }
 
@@ -64,9 +64,12 @@ public class DestinyService {
         entity.setDistance(obj.getDistance());
     }
 
-    public Destiny fromDTO(DestinyNewDTO obj){
-        return new Destiny(obj.getName(),
-                   obj.getDistance(),
-                   lineCategoryService.findById(obj.getCategoryId()));
+    public Destiny fromDTO(DestinyNewDTO obj) {
+
+        return Destiny.builder()
+                .name(obj.getName())
+                .distance(obj.getDistance())
+                .category(lineCategoryService.findById(obj.getCategoryId()))
+                .build();
     }
 }

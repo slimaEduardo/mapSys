@@ -1,4 +1,4 @@
-package br.com.sinart.mapSys.resources;
+package br.com.sinart.mapSys.resources.api;
 
 
 import br.com.sinart.mapSys.dto.MapReportDTO;
