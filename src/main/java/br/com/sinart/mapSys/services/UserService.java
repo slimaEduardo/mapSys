@@ -64,9 +64,9 @@ public class UserService {
     private void verifyRole(UserUpdateRequest request, User user) {
         if (request.getRole() != null) {
             if (request.getRole().equals(RoleName.ADMIN)) {
-                user.setUserProfile(0);
-            } else if (request.getRole().equals(RoleName.USER)) {
                 user.setUserProfile(1);
+            } else if (request.getRole().equals(RoleName.USER)) {
+                user.setUserProfile(0);
             }
         }
     }

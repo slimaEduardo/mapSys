@@ -22,4 +22,8 @@ public class UserResponse implements Serializable {
     private String name;
     @ApiModelProperty(position = 3)
     private String userName;
+    @ApiModelProperty(position = 4)
+    private String password;
+    @ApiModelProperty(position = 5)
+    private String userProfile;
 }
