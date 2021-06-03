@@ -12,6 +12,7 @@ import org.springframework.util.ResourceUtils;
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -101,7 +102,8 @@ public class TravelMapService {
     }
 
     public File exportReport(LocalDate initialLocalDate, LocalDate finalLocalDate) throws FileNotFoundException, JRException, SQLException {
-        File file = ResourceUtils.getFile("classpath:Leaf_Green.jrxml");
+        File file = ResourceUtils.getFile("classpath:reports/byDate/report_01.jrxml");
+
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         Date start = Date.valueOf(initialLocalDate);
         Date end = Date.valueOf(finalLocalDate);
