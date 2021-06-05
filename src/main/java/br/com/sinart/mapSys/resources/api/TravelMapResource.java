@@ -135,11 +135,13 @@ public class TravelMapResource {
     @RequestMapping(method = RequestMethod.GET, value = "/report")
     public ResponseEntity<?> reportInterval(
             @RequestParam(value="start",  defaultValue = "") String start,
-            @RequestParam(value="end",  defaultValue = "") String end) throws JRException, FileNotFoundException, SQLException {
+            @RequestParam(value="end",  defaultValue = "") String end,
+            @RequestParam(value="param",  defaultValue = "0") Integer param,
+            @RequestParam(value="paramId",  defaultValue = "") Integer paramId) throws JRException, FileNotFoundException, SQLException {
         MapReportDTO report;
         LocalDate initialLocalDate = LocalDate.parse(start,formatadorBarra);
         LocalDate finalLocalDate = LocalDate.parse(end,formatadorBarra);
-        File file = service.exportReport(initialLocalDate,finalLocalDate);
+        File file = service.exportReport(initialLocalDate,finalLocalDate,param,paramId);
         HttpHeaders header = new HttpHeaders();
         header.add(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=relatorio.pdf");
         try {

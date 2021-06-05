@@ -23,6 +23,10 @@ import java.util.Optional;
 @Service
 public class TravelMapService {
 
+    public static final String BY_DATE = "classpath:reports/byDate/report_01.jrxml";
+    public static final String BY_COMPANY = "classpath:reports/byCompany/report_by_company.jrxml";
+    public static final String BY_DESTINATION = "classpath:reports/byDestination/report_by_destination.jrxml";
+
     @Autowired
     private TravelMapRepository repository;
     @Autowired
@@ -101,15 +105,29 @@ public class TravelMapService {
         return repository.findAllByBoardingDate(initialLocalDate, finalLocalDate);
     }
 
-    public File exportReport(LocalDate initialLocalDate, LocalDate finalLocalDate) throws FileNotFoundException, JRException, SQLException {
-        File file = ResourceUtils.getFile("classpath:reports/byDate/report_01.jrxml");
-
-        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+    public File exportReport(LocalDate initialLocalDate, LocalDate finalLocalDate,
+                             Integer param, Integer paramId) throws FileNotFoundException, JRException, SQLException {
         Date start = Date.valueOf(initialLocalDate);
         Date end = Date.valueOf(finalLocalDate);
+
+        File file;
         HashMap parameters = new HashMap<>();
         parameters.put("DATA_INICIAL", start);
         parameters.put("DATA_FINAL", end);
+        switch (param){
+            case 1:
+                parameters.put("ID_EMPRESA", paramId);
+                file = ResourceUtils.getFile(BY_COMPANY);
+                break;
+            case 2:
+                parameters.put("ID_DESTINO", paramId);
+                file = ResourceUtils.getFile(BY_DESTINATION);
+                break;
+            default:
+                file = ResourceUtils.getFile(BY_DATE);
+                break;
+        }
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource.getConnection());
         JasperExportManager.exportReportToPdfFile(jasperPrint, "relatorio.pdf");
         File file2 = new File("relatorio.pdf");

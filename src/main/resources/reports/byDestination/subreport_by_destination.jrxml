@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subreport_destination" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="88d11aa3-bcd3-4ab5-a7fd-14157c8e5550">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Mysql_curso"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="243"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="751"/>
+	<parameter name="TOTAL_PASSAGEIROS_REPORT" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="TOTAL_EMBARQUES_REPORT" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="DATA_INICIAL" class="java.sql.Date" isForPrompting="false"/>
+	<parameter name="DATA_FINAL" class="java.sql.Date" isForPrompting="false"/>
+	<parameter name="ID_EMPRESA" class="java.lang.Integer" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT COUNT(destino.`NOME_DESTINO`), COUNT(empresa.`NOME_EMPRESA`),empresa.`NOME_EMPRESA` AS empresa_NOME_EMPRESA,
+     sum(mapas.`QNT_PASSAGEIROS`) AS mapas_QNT_PASSAGEIROS,
+     mapas.`DATA_VIAGEM` AS mapas_DATA_VIAGEM,
+     tipolinha.`NOME_LINHA` AS tipolinha_NOME_LINHA,
+     mapas.`ID_EMPRESA_MAPAS` AS mapas_ID_EMPRESA_MAPAS,
+     mapas.`ID_DESTINO_MAPAS` AS mapas_ID_DESTINO_MAPAS,
+     destino.`NOME_DESTINO` AS destino_NOME_DESTINO
+    
+FROM
+      mapas.tipolinha  tipolinha INNER JOIN  mapas.destino  destino ON tipolinha.`ID_LINHA` = destino.`ID_TIPO_LINHA_DESTINO`
+     INNER JOIN  mapas.mapas  mapas ON destino.`ID_DESTINO` = mapas.`ID_DESTINO_MAPAS`
+     INNER JOIN  mapas.empresa  empresa ON mapas.`ID_EMPRESA_MAPAS` = empresa.`ID_EMPRESA` WHERE mapas.`DATA_VIAGEM` BETWEEN   $P{DATA_INICIAL} AND  $P{DATA_FINAL} 
+     AND   mapas.mapas.`ID_DESTINO_MAPAS`  =   $P{ID_EMPRESA} 
+	 group by destino_NOME_DESTINO]]>
+	</queryString>
+	<field name="COUNT(destino.`NOME_DESTINO`)" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="COUNT(destino.`NOME_DESTINO`)"/>
+		<property name="com.jaspersoft.studio.field.label" value="COUNT(destino.`NOME_DESTINO`)"/>
+	</field>
+	<field name="COUNT(empresa.`NOME_EMPRESA`)" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="COUNT(empresa.`NOME_EMPRESA`)"/>
+		<property name="com.jaspersoft.studio.field.label" value="COUNT(empresa.`NOME_EMPRESA`)"/>
+	</field>
+	<field name="empresa_NOME_EMPRESA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_EMPRESA"/>
+		<property name="com.jaspersoft.studio.field.label" value="empresa_NOME_EMPRESA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="empresa"/>
+	</field>
+	<field name="mapas_QNT_PASSAGEIROS" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="mapas_QNT_PASSAGEIROS"/>
+		<property name="com.jaspersoft.studio.field.label" value="mapas_QNT_PASSAGEIROS"/>
+	</field>
+	<field name="mapas_DATA_VIAGEM" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="DATA_VIAGEM"/>
+		<property name="com.jaspersoft.studio.field.label" value="mapas_DATA_VIAGEM"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mapas"/>
+	</field>
+	<field name="tipolinha_NOME_LINHA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_LINHA"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipolinha_NOME_LINHA"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tipolinha"/>
+	</field>
+	<field name="mapas_ID_EMPRESA_MAPAS" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ID_EMPRESA_MAPAS"/>
+		<property name="com.jaspersoft.studio.field.label" value="mapas_ID_EMPRESA_MAPAS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mapas"/>
+	</field>
+	<field name="mapas_ID_DESTINO_MAPAS" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ID_DESTINO_MAPAS"/>
+		<property name="com.jaspersoft.studio.field.label" value="mapas_ID_DESTINO_MAPAS"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mapas"/>
+	</field>
+	<field name="destino_NOME_DESTINO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOME_DESTINO"/>
+		<property name="com.jaspersoft.studio.field.label" value="destino_NOME_DESTINO"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="destino"/>
+	</field>
+	<variable name="QNT_PASSAGEIROS_DESTINOS" class="java.lang.Integer" resetType="Group" resetGroup="destinos" calculation="Sum">
+		<variableExpression><![CDATA[$F{mapas_QNT_PASSAGEIROS}]]></variableExpression>
+	</variable>
+	<variable name="QNT_EMBARQUES_EMPRESAS" class="java.lang.Integer" resetType="Group" resetGroup="destinos" calculation="Sum">
+		<variableExpression><![CDATA[$F{COUNT(destino.`NOME_DESTINO`)}]]></variableExpression>
+	</variable>
+	<group name="empresa_NOME_EMPRESA">
+		<groupExpression><![CDATA[$F{empresa_NOME_EMPRESA}]]></groupExpression>
+	</group>
+	<group name="destinos"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="40">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="20" backcolor="#CCCCCC" uuid="2d4e9684-cb38-4659-a5b5-c53d651f6678"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{destino_NOME_DESTINO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="20" width="100" height="20" uuid="0d305011-808f-4a21-995e-9624989d0364"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{mapas_QNT_PASSAGEIROS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="100" height="20" uuid="afa40d28-4c10-4e3f-a240-63a23d2cee6d"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PASSAGEIROS:]]></text>
+			</staticText>
+			<textField pattern="#,##0.##%">
+				<reportElement x="300" y="20" width="100" height="20" uuid="fd805a3d-2f1a-4f8d-8659-4b076ef3c3a5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new Double(($F{mapas_QNT_PASSAGEIROS}.doubleValue())/$P{TOTAL_PASSAGEIROS_REPORT}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="200" y="20" width="100" height="20" uuid="d418bf0b-d080-4bc4-bd70-805ef61299a3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PARTICIPAÇÃO:]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>
