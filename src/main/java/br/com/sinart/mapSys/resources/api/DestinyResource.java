@@ -35,7 +35,7 @@ public class DestinyResource {
         Destiny obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public ResponseEntity<Integer> insert( @RequestBody DestinyNewDTO objNew) {
         Destiny obj = service.fromDTO(objNew);
@@ -44,14 +44,14 @@ public class DestinyResource {
         return ResponseEntity.created(uri).body(obj.getId());
     }
 
-   // @PreAuthorize("hasAnyRole('ADMIN')")
+   @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<Destiny> update(@PathVariable Integer id,@RequestBody DestinyNewDTO objNew){
         Destiny obj = service.update(id, objNew);
         return ResponseEntity.ok().body(obj);
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);

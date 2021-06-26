@@ -33,7 +33,7 @@ public class LineCategoryResource {
         return ResponseEntity.ok().body(obj);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public ResponseEntity<LineCategory> insert( @RequestBody LineCategory obj) {
         obj = service.insert(obj);
@@ -41,14 +41,14 @@ public class LineCategoryResource {
         return ResponseEntity.created(uri).body(obj);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<LineCategory> update(@PathVariable Integer id,@RequestBody LineCategory obj){
         obj = service.update(id, obj);
         return ResponseEntity.ok().body(obj);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);

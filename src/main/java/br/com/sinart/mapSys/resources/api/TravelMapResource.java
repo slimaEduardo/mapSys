@@ -64,7 +64,7 @@ public class TravelMapResource {
         return ResponseEntity.created(uri).body(objDto);
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<TravelMapDTO> update(@PathVariable Integer id,@RequestBody TravelMapNewDTO obj){
         TravelMap objUpdated = service.update(id, obj);
@@ -72,7 +72,7 @@ public class TravelMapResource {
         return ResponseEntity.ok().body(objDto);
     }
 
-   // @PreAuthorize("hasAnyRole('ADMIN')")
+   @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
@@ -133,6 +133,7 @@ public class TravelMapResource {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/report")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> reportInterval(
             @RequestParam(value="start",  defaultValue = "") String start,
             @RequestParam(value="end",  defaultValue = "") String end,

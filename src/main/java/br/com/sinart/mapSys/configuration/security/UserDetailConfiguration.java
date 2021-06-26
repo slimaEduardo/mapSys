@@ -10,12 +10,14 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Collection;
 import java.util.Objects;
 
 @Slf4j
 @Component
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserDetailConfiguration implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final UserRepository userRepository;

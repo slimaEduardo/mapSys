@@ -30,7 +30,7 @@ public class UserResource {
     private final UserMapper userMapper = getUserMapper();
 
     @ApiOperation("Find all users")
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public ResponseEntity<List<UserResponse>> findAll() {
         return ResponseEntity.ok().body(userMapper.toResponseList(service.findAll()));
@@ -43,6 +43,7 @@ public class UserResource {
     }
 
     @ApiOperation("Create an user")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public ResponseEntity<UserResponse> insert(@Valid @RequestBody UserCreateRequest request) {
         return new ResponseEntity<>(userMapper.toResponse(service.create(request)), HttpStatus.CREATED);
@@ -62,6 +63,7 @@ public class UserResource {
 
     @ApiOperation("Delete an user")
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.noContent().build();

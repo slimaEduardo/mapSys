@@ -7,6 +7,7 @@ import br.com.sinart.mapSys.services.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -29,7 +30,7 @@ public class CompanyResource {
         return ResponseEntity.ok().body(objDto);
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public ResponseEntity<Company> insert(@RequestBody Company obj) {
         obj = service.insert(obj);
@@ -37,14 +38,14 @@ public class CompanyResource {
         return ResponseEntity.created(uri).body(obj);
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<Company> update(@PathVariable Integer id, @RequestBody Company obj) {
         obj = service.update(id, obj);
         return ResponseEntity.ok().body(obj);
     }
 
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         service.delete(id);
