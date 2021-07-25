@@ -8,13 +8,14 @@ public class CompanyDTO implements Serializable {
 
     private Integer id;
     private String name;
-
+    private Boolean isActive;
     public CompanyDTO() {
     }
 
     public CompanyDTO(Company obj) {
         this.id = obj.getId();
         this.name = obj.getName();
+        this.isActive = obj.getIsActive();
     }
 
     public Integer getId() {
@@ -31,5 +32,13 @@ public class CompanyDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 }

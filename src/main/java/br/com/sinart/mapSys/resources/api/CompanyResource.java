@@ -24,10 +24,10 @@ public class CompanyResource {
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CompanyDTO> findById(@PathVariable Integer id) {
+    public ResponseEntity<Company> findById(@PathVariable Integer id) {
         Company obj = service.findById(id);
-        CompanyDTO objDto = new CompanyDTO(obj);
-        return ResponseEntity.ok().body(objDto);
+        //CompanyDTO objDto = new CompanyDTO(obj);
+        return ResponseEntity.ok().body(obj);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

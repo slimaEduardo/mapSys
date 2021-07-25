@@ -33,4 +33,6 @@ public class User implements Serializable {
     // 1 = ROLE_USER
     @Column(name = "flag_admin")
     private Integer userProfile;
+    @Column(name = "flag_usuario_ativado")
+    private Boolean isActive;
 }

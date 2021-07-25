@@ -23,4 +23,6 @@ public class  BusCategory implements Serializable {
 
     @Column(name = "nome_categoria")
     private String name;
+    @Column(name = "flag_categoria_ativada")
+    private Boolean isActive;
 }

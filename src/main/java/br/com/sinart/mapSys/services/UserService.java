@@ -41,6 +41,7 @@ public class UserService {
         user.setUserName(request.getUserName());
         user.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
         user.setUserProfile(RoleName.valueOf(request.getRole().name()).getCode());
+        user.setIsActive(true);
         return userRepository.saveAndFlush(user);
     }
 

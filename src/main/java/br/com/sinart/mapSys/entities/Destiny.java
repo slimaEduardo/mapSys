@@ -31,4 +31,6 @@ public class Destiny implements Serializable {
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "id_tipo_linha_destino", referencedColumnName = "id_linha")
     private LineCategory category;
+    @Column(name = "flag_destino_ativado")
+    private Boolean isActive;
 }

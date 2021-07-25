@@ -23,4 +23,7 @@ public class Company implements Serializable {
 
     @Column(name = "nome_empresa")
     private String name;
+
+    @Column(name = "flag_empresa_ativado")
+    private Boolean isActive;
 }

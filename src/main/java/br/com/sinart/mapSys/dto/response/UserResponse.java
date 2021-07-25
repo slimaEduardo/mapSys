@@ -26,4 +26,6 @@ public class UserResponse implements Serializable {
     private String password;
     @ApiModelProperty(position = 5)
     private String userProfile;
+    @ApiModelProperty(position = 6)
+    private Boolean isActive;
 }

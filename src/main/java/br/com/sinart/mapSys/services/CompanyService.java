@@ -54,7 +54,7 @@ public class CompanyService {
 
     private void updateData(Company entity, Company obj) {
         entity.setName(obj.getName());
-        
+        entity.setIsActive(obj.getIsActive());
     }
 
     public List<Company> findByName(String name) {

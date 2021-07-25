@@ -11,6 +11,7 @@ public class DestinyDTO implements Serializable {
     private String name;
     private Integer distance;
     private String typeLine;
+    private Boolean isActive;
 
     public DestinyDTO() {
     }
@@ -20,6 +21,7 @@ public class DestinyDTO implements Serializable {
         this.name = obj.getName();
         this.distance = obj.getDistance();
         this.typeLine = obj.getCategory().getName();
+        this.isActive = obj.getIsActive();
     }
 
     public Integer getId() {
@@ -52,5 +54,13 @@ public class DestinyDTO implements Serializable {
 
     public void setTypeLine(String name) {
         this.typeLine = name;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 }

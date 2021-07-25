@@ -23,4 +23,7 @@ public class LineCategory implements Serializable {
 
     @Column(name = "nome_linha")
     private String name;
+
+    @Column(name = "flag_linha_ativada")
+    private Boolean isActive;
 }
