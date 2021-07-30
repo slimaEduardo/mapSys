@@ -61,8 +61,14 @@ public class DestinyService {
         entity.setName(obj.getName());
         entity.setCategory(lineCategoryService.findById(obj.getCategoryId()));
         entity.setDistance(obj.getDistance());
+        entity.setIsActive(obj.getIsActive());
     }
 
+    public Destiny switchStatus(Integer id, Destiny obj){
+        Destiny entity = repository.getOne(id);
+        entity.setIsActive(obj.getIsActive());
+        return repository.save(entity);
+    }
     public Destiny fromDTO(DestinyNewDTO obj) {
 
         return Destiny.builder()

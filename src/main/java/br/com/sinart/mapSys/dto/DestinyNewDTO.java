@@ -11,6 +11,7 @@ public class DestinyNewDTO implements Serializable {
     private Integer distance;
     @NotEmpty(message = "Campo Obrigatório.")
     private Integer categoryId;
+    private Boolean isActive;
 
     public DestinyNewDTO() {
     }
@@ -37,5 +38,13 @@ public class DestinyNewDTO implements Serializable {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        isActive = isActive;
     }
 }

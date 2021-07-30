@@ -52,6 +52,13 @@ public class DestinyResource {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
+    @PutMapping(value = "/s/{id}")
+    public ResponseEntity<Destiny> switchStatus(@PathVariable Integer id,@RequestBody Destiny _obj){
+        Destiny obj = service.switchStatus(id, _obj);
+        return ResponseEntity.ok().body(obj);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
