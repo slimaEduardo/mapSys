@@ -27,8 +27,8 @@ public class LineCategoryService {
     }
 
     public LineCategory insert(LineCategory obj) {
-
-         return repository.save(obj);
+        obj.setIsActive(true);
+        return repository.save(obj);
     }
 
     public void delete(Integer id){

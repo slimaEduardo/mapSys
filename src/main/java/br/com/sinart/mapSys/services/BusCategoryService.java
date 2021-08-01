@@ -27,7 +27,7 @@ public class BusCategoryService {
     }
 
     public BusCategory insert(BusCategory obj) {
-
+        obj.setIsActive(true);
          return repository.save(obj);
     }
 
@@ -47,5 +47,6 @@ public class BusCategoryService {
 
     private void updateData(BusCategory entity, BusCategory obj) {
         entity.setName(obj.getName());
+        entity.setIsActive(obj.getIsActive());
     }
 }

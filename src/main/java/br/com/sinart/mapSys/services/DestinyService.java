@@ -38,7 +38,7 @@ public class DestinyService {
     }
 
     public Destiny insert(Destiny obj) {
-
+        obj.setIsActive(true);
         return repository.save(obj);
     }
 

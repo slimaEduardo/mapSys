@@ -28,8 +28,8 @@ public class CompanyService {
     }
 
     public Company insert(Company obj) {
-
-         return repository.save(obj);
+        obj.setIsActive(true);
+        return repository.save(obj);
     }
 
     public void delete(Integer id){
