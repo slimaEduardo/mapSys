@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
-    @Query("SELECT obj FROM Company obj WHERE obj.name LIKE %?1%")
+    @Query("SELECT obj FROM Company obj WHERE obj.name LIKE %?1% AND obj.isActive = true")
     List<Company> findAllByName(String name);
 }

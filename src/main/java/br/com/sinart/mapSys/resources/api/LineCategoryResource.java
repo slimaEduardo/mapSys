@@ -26,6 +26,11 @@ public class LineCategoryResource {
         return ResponseEntity.ok().body(list);
     }
 
+    @GetMapping(value = "/active")
+    public ResponseEntity<List> findAllActive(){
+        List<LineCategory> list = service.findAllActive();
+        return ResponseEntity.ok().body(list);
+    }
     
     @GetMapping(value = "/{id}")
     public ResponseEntity<LineCategory> findById(@PathVariable Integer id) {

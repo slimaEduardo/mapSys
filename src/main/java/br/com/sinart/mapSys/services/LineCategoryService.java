@@ -21,6 +21,10 @@ public class LineCategoryService {
         return repository.findAll();
     }
 
+    public List<LineCategory> findAllActive(){
+        return repository.findAllActive();
+    }
+
     public LineCategory findById(Integer id) {
         Optional<LineCategory> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Categoria com id " + id + " não encontrada."));
@@ -49,6 +53,6 @@ public class LineCategoryService {
 
     private void updateData(LineCategory entity, LineCategory obj) {
         entity.setName(obj.getName());
-        
+        entity.setIsActive(obj.getIsActive());
     }
 }
